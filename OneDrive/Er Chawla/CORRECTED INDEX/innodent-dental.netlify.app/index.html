@@ -1,0 +1,3523 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innodent Dental Care</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font (Google Fonts) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- html2pdf.js CDN for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsIDXPi/mXPhoRnyPn9byr2J2F/Q2/c34V9A6/bT7p+o3U/eGvW2A+kG/mQ/iL/j/K3/lP8/o3+Q1/c+o/lQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif; /* Changed to Inter font */
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures body takes at least the full viewport height */
+        }
+        /* Clinic Header */
+        .clinic-header {
+            background: linear-gradient(135deg, #2d89ef 0%, #1a66b3 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(45, 137, 239, 0.3);
+        }
+        .clinic-header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .clinic-header .tagline {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        /* Doctors Header Container */
+        .doctors-header-container {
+            background: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            border-top: 1px solid #eee;
+        }
+        .doctors-header-container h2 {
+            color: #2d89ef;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .doctors-header-container h3 { /* Second header for doctors section */
+            color: #00897b; /* Vibrant green color */
+            font-size: 1.4em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .doctors-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            max-width: 960px;
+            margin: 0 auto;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+        .doctor-info-header {
+            text-align: center;
+            flex-basis: 280px; /* Give a base width for flex items */
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .doctor-name-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .doctor-specialty-header {
+            color: #777;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        /* Navigation buttons (main) */
+        nav {
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav button {
+            background-color: #2d89ef;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            min-width: 120px;
+        }
+        nav button:hover {
+            background-color: #1a66b3;
+        }
+        nav button.active {
+            background-color: #00897b; /* Highlight the active button */
+        }
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-grow: 1; /* Allows main content to take up available space */
+        }
+        main h2 {
+            color: #2d89ef;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        /* Form specific styles */
+        .form-group {
+            margin-bottom: 20px; /* Increased consistent spacing between form groups */
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 4px;
+        }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #2d89ef; }
+        .checkbox-group label { font-weight: normal; margin-left: 5px; color: #00897b; }
+        /* Consistent spacing for all input types */
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea,
+        .time-slots {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            line-height: 1.5;
+            background-color: #fff;
+        }
+        /* Calendar Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #e0f2fe; /* Light blue */
+            border-radius: 0.75rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .calendar-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e40af; /* Darker blue */
+            margin: 0;
+        }
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #1e40af;
+            transition: color 0.2s;
+        }
+        .calendar-header button:hover {
+            color: #3b82f6;
+        }
+        .calendar-header button:disabled {
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background-color: #ffffff;
+        }
+        .calendar-cell {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #334155;
+            position: relative; /* For appointment positioning */
+            cursor: pointer; /* All days are clickable now */
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .calendar-cell.day-name {
+            background-color: #e2e8f0;
+            font-weight: 600;
+            color: #1e293b;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            cursor: default;
+        }
+        .calendar-cell:not(.day-name):hover {
+            background-color: #dbeafe; /* Blue-100 */
+            transform: translateY(-2px);
+        }
+        .calendar-cell.today {
+            border: 2px solid #1a73e8;
+            background-color: #e0f2fe; /* Lighter blue */
+            box-shadow: 0 0 0 2px #90cdf4;
+        }
+        .calendar-cell.sunday {
+            color: #ef4444; /* Red-500 */
+        }
+        .calendar-cell .appointment {
+            background-color: #3b82f6; /* Blue-500 */
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            margin-top: 0.25rem;
+            width: calc(100% - 1rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .current-month-red {
+            color: #ef4444 !important; /* Today's month in red */
+        }
+        .appointment-list-container, .doctor-appointments-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            width: 100%;
+        }
+        .appointment-list-container h3, .doctor-appointments-container h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .appointment-list-container ul, .doctor-appointments-container ul {
+            list-style: none;
+            padding: 0;
+        }
+        .appointment-list-container li, .doctor-appointments-container li {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+        }
+        .appointment-list-container li:last-child, .doctor-appointments-container li:last-child {
+            margin-bottom: 0;
+        }
+        .appointment-list-container li strong, .doctor-appointments-container li strong {
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        .doctor-group {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #bfdbfe; /* Blue-200 */
+            border-radius: 0.75rem;
+            background-color: #eff6ff; /* Blue-50 */
+        }
+        .doctor-group h3 {
+            border-bottom: 1px solid #93c5fd; /* Blue-300 */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: #1e40af; /* Blue-800 */
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Base z-index for overlays */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh; /* Crucial for vertical scrolling */
+            overflow-y: auto; /* Enable scrolling for content if it overflows */
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .modal-content h4 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .appointment-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .appointment-form label {
+            font-size: 0.95rem;
+        }
+        .time-slots-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            max-height: 200px; /* Ensures vertical scrolling for time slots */
+            overflow-y: auto; /* Enables vertical scrolling */
+            padding-right: 5px; /* Adds space for the scrollbar */
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+        .time-slots-container .slot-btn {
+            background-color: #e2e8f0;
+            color: #2d3748;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e0;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            font-size: 0.9rem;
+            flex-shrink: 0; /* Prevent shrinking to maintain width */
+        }
+        .time-slots-container .slot-btn:hover:not(:disabled) {
+            background-color: #dbeafe;
+            border-color: #60a5fa;
+        }
+        .time-slots-container .slot-btn.selected {
+            background-color: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+            box-shadow: 0 2px 5px rgba(26, 115, 232, 0.3);
+        }
+        .time-slots-container .slot-btn.disabled-past {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            text-decoration: line-through;
+            pointer-events: none; /* Prevent click events */
+        }
+        .time-slots-container .slot-btn.booked-slot { /* New class for booked slots */
+            background-color: #fcebeb; /* Light red */
+            color: #cc0000;
+            cursor: not-allowed;
+            text-decoration: line-through;
+            pointer-events: none;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .modal-actions .book-btn {
+            background-color: #22c55e; /* Green-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .modal-actions .book-btn:hover {
+            background-color: #16a34a; /* Green-600 */
+        }
+        .modal-actions .cancel-btn {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .modal-actions .cancel-btn:hover {
+            background-color: #dc2626; /* Red-600 */
+        }
+
+        /* Custom Message Modal */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001; /* Higher than other modals for important messages */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .custom-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .custom-modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .custom-modal-overlay.active .custom-modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .custom-modal-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .custom-modal-content p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        .custom-modal-content .close-btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .custom-modal-content .close-btn:hover {
+            background-color: #155eaf;
+        }
+        .custom-modal-content.success h4 { color: #22c55e; }
+        .custom-modal-content.error h4 { color: #ef4444; }
+        .custom-modal-content.info h4 { color: #3b82f6; }
+        .custom-modal-content.warning h4 { color: #f97316; } /* Orange for warning */
+
+
+        /* Patient Form Specifics */
+        #patient-status {
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .patient-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        #present_disease .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+        #present_disease .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        .specify-input {
+            display: none; /* Hidden by default */
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .treatment-item {
+            background-color: #f0f8ff; /* Lightest blue */
+            border: 1px solid #bfdbfe; /* Blue-200 */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            /* Updated grid for removed fields */
+            display: grid;
+            grid-template-columns: 2fr 1fr auto; /* Treatment name, cost, and remove button */
+            gap: 1rem;
+            align-items: center;
+        }
+        .treatment-item .remove-treatment-btn {
+            position: static; /* Remove absolute positioning */
+            margin-left: auto; /* Push to the right */
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: background-color 0.2s;
+        }
+        .treatment-item .remove-treatment-btn:hover {
+            background-color: #dc2626;
+        }
+        .medicine-item { /* New style for medicine items */
+            background-color: #f0fff4; /* Light green for medicines */
+            border: 1px solid #a7f3d0; /* Green-200 */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            display: grid; /* Add grid for medicine item inputs */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+            gap: 1rem;
+        }
+        .medicine-item .form-group { /* Adjust form group within medicine item */
+            margin-bottom: 0;
+            padding: 0;
+            background-color: transparent;
+        }
+        .medicine-item .remove-medicine-btn { /* New style for medicine remove button */
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: background-color 0.2s;
+        }
+        .medicine-item .remove-medicine-btn:hover {
+            background-color: #dc2626;
+        }
+        .payment-summary {
+            background-color: #f0fdf4; /* Light green */
+            border: 1px solid #a7f3d0; /* Green-200 */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .payment-summary div {
+            padding: 0.75rem 1rem;
+            background-color: #dcfce7; /* Green-100 */
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .payment-summary label {
+            font-weight: 500;
+            color: #166534; /* Green-800 */
+            margin-bottom: 0.25rem;
+        }
+        .payment-summary input {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a73e8;
+            text-align: right;
+            /* Removed pointer-events: none; to allow interaction */
+        }
+        /* Make the cumulative totals readonly, but allow text selection */
+        .payment-summary input[readonly] {
+            cursor: default; /* Indicate it's not directly editable */
+            /* pointer-events: none; /* Keep this removed to allow text selection */
+            opacity: 0.8; /* Dim slightly to indicate readonly */
+        }
+
+        .payment-summary input.balance-due-text {
+            color: #ef4444; /* Red for balance due */
+            font-weight: 700;
+        }
+
+        /* Prescription Preview Section */
+        #prescription-view-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Spacing from other sections */
+            display: none; /* Hidden by default, shown by JS */
+            flex-direction: column; /* To stack header, content, and actions */
+        }
+
+        #prescription-modal-content { /* Content area within the section, for print/PDF targeting */
+            padding: 0.5rem 1.0rem; /* Further reduced padding */
+            background-color: #fff;
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px dashed #e0f2fe;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 500px;
+        }
+        .clinic-header-pdf {
+            text-align: center;
+            margin-bottom: 0.8rem; /* Further reduced margin */
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem; /* Further reduced padding */
+        }
+        /* Styles for print header to match homepage */
+        .clinic-header-pdf .clinic-header {
+            background: linear-gradient(135deg, #2d89ef 0%, #1a66b3 100%); /* Match homepage gradient */
+            color: white; /* Match homepage text color */
+            padding: 15px 10px; /* Match homepage padding, further reduced */
+            text-align: center;
+            margin-bottom: 8px; /* Adjust spacing for print */
+            border-radius: 12px; /* Match homepage border-radius */
+            box-shadow: none; /* Remove shadow for print */
+        }
+        .clinic-header-pdf .clinic-header h1 {
+            color: white; /* Ensure h1 is white */
+            font-size: 2.2em; /* Adjust font size for print */
+            margin: 0;
+        }
+        .clinic-header-pdf .clinic-header .tagline {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .clinic-header-pdf .clinic-header p {
+            color: white; /* Ensure other text is white */
+            opacity: 0.8;
+            font-size: 0.75em;
+        }
+
+        .clinic-header-pdf .doctors-header-container {
+            background: #f8f8f8; /* Match homepage background */
+            color: #333; /* Match homepage default text */
+            padding: 10px; /* Match homepage padding, further reduced */
+            text-align: center;
+            margin-bottom: 10px; /* Adjust spacing for print */
+            border-bottom: 1px solid #eee;
+            border-top: 1px solid #eee;
+            border-radius: 0; /* Remove border-radius for print */
+            box-shadow: none; /* Remove shadow for print */
+        }
+        .clinic-header-pdf .doctors-header-container h2 {
+            color: #2d89ef; /* Match homepage color */
+            font-size: 1.4em;
+            margin-bottom: 0.5rem;
+        }
+        .clinic-header-pdf .doctors-header-container h3 {
+            color: #00897b; /* Match homepage color */
+            font-size: 1em;
+            font-style: italic;
+        }
+        .clinic-header-pdf .doctors-list {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Further reduced gap */
+            flex-wrap: wrap;
+        }
+        .clinic-header-pdf .doctor-info-header {
+            text-align: center;
+            flex-basis: 200px; /* Further reduced basis */
+            padding: 2px; /* Further reduced padding */
+            box-sizing: border-box;
+            background: none; /* No specific background for doctor info in print */
+        }
+        .clinic-header-pdf .doctor-name-header {
+            color: #333; /* Match homepage color */
+            font-size: 1em;
+        }
+        .clinic-header-pdf .doctor-specialty-header {
+            color: #777;
+            font-size: 0.8em;
+        }
+
+
+        .patient-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem; /* Further reduced gap */
+            margin-bottom: 0.8rem; /* Further reduced margin */
+        }
+        .patient-info-grid p {
+            margin: 0;
+            line-height: 1.1; /* Further reduced line height */
+            font-size: 0.85em; /* Further smaller font */
+        }
+        .patient-info-grid p strong {
+            color: #1a73e8;
+            margin-right: 0.3rem;
+        }
+        .section-title {
+            font-size: 1em; /* Further smaller */
+            font-weight: 600;
+            color: #1a73e8;
+            margin-top: 0.8rem; /* Further reduced margin */
+            margin-bottom: 0.4rem; /* Further reduced margin */
+            border-bottom: 1px solid #e0f2fe;
+            padding-bottom: 0.2rem; /* Further reduced padding */
+        }
+        /* New style for condensed health issues */
+        .health-issues-condensed {
+            margin-bottom: 0.6rem; /* Further reduced margin */
+            padding-left: 0.4rem;
+            font-size: 0.85em; /* Smaller font */
+            line-height: 1.2;
+            color: #333;
+        }
+        .prescription-list {
+            list-style: disc;
+            margin-left: 1rem; /* Further reduced margin */
+            margin-bottom: 0.6rem; /* Further reduced margin */
+        }
+        .prescription-list li {
+            margin-bottom: 0.2rem; /* Further reduced margin */
+            color: #333;
+            font-size: 0.85em; /* Further smaller font */
+            line-height: 1.3;
+        }
+        .doctor-signature {
+            text-align: right;
+            margin-top: 1rem; /* Reduced margin */
+            font-weight: 600;
+            color: #555;
+            font-size: 0.85em;
+        }
+        .prescription-footer {
+            text-align: center;
+            margin-top: auto; /* Pushes the footer to the bottom of the flex container */
+            padding-top: 0.5rem; /* Further reduced padding */
+            border-top: 1px solid #1a73e8; /* Changed to clinic blue */
+            font-size: 0.75em; /* Further smaller */
+            color: #1a73e8; /* Matched to clinic blue */
+            opacity: 1; /* Ensure full opacity */
+        }
+        .pdf-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+        }
+        .pdf-actions .btn {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .pdf-actions .close-modal-btn {
+            background-color: #6b7280; /* Gray-500 */
+            color: white;
+        }
+        .pdf-actions .close-modal-btn:hover {
+            background-color: #4b5563; /* Gray-600 */
+        }
+        /* NEW: Custom colors for print/download buttons */
+        #print-prescription {
+            background-color: #1a73e8; /* Google Blue */
+            color: white;
+        }
+        #print-prescription:hover {
+            background-color: #155eaf;
+        }
+        #download-prescription {
+            background-color: #28a745; /* Bootstrap Green */
+            color: white;
+        }
+        #download-prescription:hover {
+            background-color: #218838;
+        }
+
+        /* Print Specific Styles for New Window */
+        @page {
+            margin: 5mm; /* Reduced standard A4 margins */
+        }
+        .print-page-content {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            padding: 5mm; /* Inner padding for the printable content, significantly reduced */
+            box-sizing: border-box;
+            line-height: 1.1; /* Tighter line spacing for print */
+        }
+        .print-page-content .clinic-header-pdf,
+        .print-page-content .patient-info-grid,
+        .print-page-content .section-title,
+        .print-page-content .prescription-list,
+        .print-page-content .doctor-signature,
+        .print-page-content .prescription-footer {
+            margin-bottom: 0.5rem; /* Adjust spacing for print */
+        }
+        .print-page-content .clinic-header-pdf .clinic-header {
+            margin-bottom: 8px; /* Spacing below main clinic header */
+        }
+        .print-page-content .clinic-header-pdf .doctors-header-container {
+            margin-bottom: 10px; /* Spacing below doctors section */
+        }
+        /* Ensure colors print correctly for all content */
+        .print-page-content * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+
+        /* Registered Patients Table */
+        .registered-patients-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+        }
+        .registered-patients-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        .registered-patients-container th,
+        .registered-patients-container td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .registered-patients-container th {
+            background-color: #f0f2f5;
+            font-weight: 600;
+            color: #4a5568;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .registered-patients-container td {
+            background-color: white;
+        }
+        .registered-patients-container tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+        .registered-patients-container .view-details-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            transition: background-color 0.2s;
+        }
+        .registered-patients-container .view-details-btn:hover {
+            background-color: #2563eb;
+        }
+        .registered-patients-container .balance-due-cell {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        /* Master List Styles */
+        .master-lists-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+        .master-lists-container h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 0.75rem;
+        }
+        .master-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .master-list-item:last-child {
+            border-bottom: none;
+        }
+        .master-list-item button {
+            padding: 0.3rem 0.7rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Income Records */
+        .income-records-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+        }
+        .income-records-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        .income-records-container th,
+        .income-records-container td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .income-records-container th {
+            background-color: #f0f2f5;
+            font-weight: 600;
+            color: #4a5568;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .income-records-container td {
+            background-color: white;
+        }
+        .income-records-container tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+        .income-summary {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .income-summary div span {
+            font-weight: 700;
+            color: #1a73e8;
+        }
+        .income-summary #total-balance {
+            color: #ef4444; /* Red for total balance due */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="clinic-header">
+            <h1>🦷 INNODENT DENTAL CARE</h1>
+            <p class="tagline">Excellence in Dental Care & Advanced Treatment Solutions</p>
+            <p style="font-size: 1em; opacity: 0.8;">📍 104, TP Nagar, Korba | Mobile: 7389425553 | Email: DR.SAHILCHAWLA@GMAIL.COM</p>
+        </div>
+        <div class="doctors-header-container">
+            <h2>👨‍⚕️ Our Expert Dental Team</h2>
+            <h3>Committed to Your Healthy Smile</h3>
+            <div class="doctors-list">
+                <div class="doctor-info-header">
+                    <h3 class="doctor-name-header">DR. SAHIL CHAWLA, BDS</h3>
+                    <p class="doctor-specialty-header">MICROSCOPIC ROOT CANAL SPECIALIST</p>
+                </div>
+                <div class="doctor-info-header">
+                    <h3 class="doctor-name-header">DR. GARIMA CHAWLA, MDS</h3>
+                    <p class="doctor-specialty-header">PEDIATRIC AND PREVENTIVE DENTISTRY</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <button onclick="navigate('appointments-section')" class="active">APPOINTMENTS</button>
+        <button onclick="navigate('patient-form-section')">REGISTER PATIENT</button>
+        <button onclick="navigate('registered-patients-section')">REGISTERED PATIENTS</button>
+        <button onclick="navigate('prescription-section')">PRESCRIPTIONS</button>
+        <button onclick="navigate('master-lists-section')">MANAGE MASTER LISTS</button>
+        <button onclick="navigate('income-records-section')">INCOME RECORDS</button>
+    </nav>
+
+    <main>
+        <!-- Appointments Section -->
+        <section id="appointments-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">APPOINTMENTS CALENDAR</h2>
+
+            <div id="todays-doctor-appointments" class="doctor-appointments-container mb-6">
+                <h3 class="text-xl">TODAY'S DOCTOR APPOINTMENTS</h3>
+                <div id="doctor-appointments-list">
+                    <!-- Today's appointments by doctor will be rendered here -->
+                </div>
+            </div>
+
+            <div class="calendar-header">
+                <button id="prevMonthBtn" onclick="changeMonth(-1)">&lt;</button>
+                <h3 id="current-month"></h3>
+                <button id="nextMonthBtn" onclick="changeMonth(1)">&gt;</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid">
+                <!-- Calendar cells will be rendered here by JavaScript -->
+            </div>
+
+            <div class="appointment-list-container">
+                <h3 class="text-xl">UPCOMING APPOINTMENTS (EXCLUDING TODAY)</h3>
+                <ul id="upcoming-appointments-list">
+                    <!-- Upcoming appointments will be loaded here by JavaScript -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Patient Registration/Appointment Form Section -->
+        <section id="patient-form-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">PATIENT REGISTRATION / APPOINTMENT</h2>
+
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label for="search_patient_contact" class="block text-lg font-medium text-blue-800 mb-2">SEARCH EXISTING PATIENT BY CONTACT:</label>
+                <div class="flex gap-4">
+                    <input type="text" id="search_patient_contact" placeholder="ENTER 10-DIGIT CONTACT NO."
+                        class="flex-grow p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        pattern="[0-9]{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                    <button id="search-patient-btn" class="btn btn-primary">SEARCH</button>
+                </div>
+                <p id="patient-status" class="mt-3 text-sm text-center"></p>
+            </div>
+
+            <form id="patient-appointment-form" class="w-full">
+                <div class="patient-form-grid">
+                    <div class="form-group">
+                        <label for="registration_date" class="text-blue-800">REGISTRATION DATE / ID:</label>
+                        <input type="text" id="registration_date" readonly class="bg-gray-100 cursor-not-allowed" placeholder="ID will appear here">
+                        <input type="hidden" id="registration_date_raw">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor" class="text-blue-800">DOCTOR:</label>
+                        <select id="doctor" name="doctor" required>
+                            <option value="">SELECT DOCTOR</option>
+                            <option value="DR. SAHIL CHAWLA, BDS">DR. SAHIL CHAWLA</option>
+                            <option value="DR. GARIMA CHAWLA, MDS">DR. GARIMA CHAWLA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient_name" class="text-blue-800">PATIENT NAME:</label>
+                        <input type="text" id="patient_name" name="patient_name" required oninput="this.value = this.value.toUpperCase()">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient_age" class="text-blue-800">AGE:</label>
+                        <input type="number" id="patient_age" name="patient_age" min="0" max="120" placeholder="AGE">
+                    </div>
+                    <div class="form-group">
+                        <label for="patient_gender" class="text-blue-800">GENDER:</label>
+                        <select id="patient_gender" name="patient_gender">
+                            <option value="">SELECT GENDER</option>
+                            <option value="Male">MALE</option>
+                            <option value="Female">FEMALE</option>
+                            <option value="Other">OTHER</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient_contact" class="text-blue-800">CONTACT NUMBER:</label>
+                        <input type="text" id="patient_contact" name="patient_contact" pattern="[0-9]{10}" placeholder="10-DIGIT NUMBER" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">HEALTH / DENTAL HISTORY</h3>
+                <div id="present_disease" class="patient-form-grid">
+                    <div class="checkbox-group">
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="hypertension_checkbox" name="health_issues" value="HYPERTENSION"> HYPERTENSION
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="diabetes_checkbox" name="health_issues" value="DIABETES"> DIABETES
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="cardiac_disease_checkbox" name="health_issues" value="CARDIAC_DISEASE"> CARDIAC DISEASE
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="asthma_checkbox" name="health_issues" value="ASTHMA"> ASTHMA
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="allergy_checkbox" name="health_issues" value="ALLERGY"> ALLERGY
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="bleeding_disorder_checkbox" name="health_issues" value="BLEEDING_DISORDER"> BLEEDING DISORDER
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="epilepsy_checkbox" name="health_issues" value="EPILEPSY"> EPILEPSY
+                        </label>
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="radiation_therapy_checkbox" name="health_issues" value="RADIATION_THRAPY"> RADIATION THERAPY
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="medication_checkbox" name="health_issues" value="CURRENTLY_TAKING_MEDICATION"> CURRENTLY TAKING MEDICATION?
+                        </label>
+                        <input type="text" id="medication_specify" name="medication_specify" placeholder="SPECIFY MEDICATION" class="specify-input" oninput="this.value = this.value.toUpperCase()">
+                    </div>
+                    <div class="checkbox-group">
+                        <label class="text-blue-800">
+                            <input type="checkbox" id="other_health_checkbox" name="health_issues" value="OTHER_HEALTH_CONCERNS"> OTHER HEALTH CONCERNS?
+                        </label>
+                        <input type="text" id="other_health_specify" name="other_health_specify" placeholder="SPECIFY OTHER CONCERNS" class="specify-input" oninput="this.value = this.value.toUpperCase()">
+                    </div>
+                </div>
+
+                <div class="form-group mt-6">
+                    <label for="dental_issue" class="text-blue-800">CHIEF COMPLAINT:</label>
+                    <select id="dental_issue" name="dental_issue">
+                        <option value="">SELECT CHIEF COMPLAINT CATEGORY</option>
+                        <!-- Tooth-Related Issues -->
+                        <optgroup label="TOOTH RELATED ISSUES">
+                            <option value="TOOTHACHE">TOOTHACHE</option>
+                            <option value="TOOTH_SENSITIVITY_HOT_COLD">TOOTH SENSITIVITY (HOT/COLD)</option>
+                            <option value="CRACKED_OR_FRACTURED_TOOTH">CRACKED OR FRACTURED TOOTH</option>
+                            <option value="DISCOLORED_TOOTH">DISCOLORED TOOTH</option>
+                            <option value="WORN_TEETH_ATTRITION">WORN TEETH (ATTRITION)</option>
+                            <option value="TOOTH_MOBILITY">TOOTH MOBILITY</option>
+                            <option value="FOOD_LODGEMENT">FOOD LODGEMENT</option>
+                        </optgroup>
+                        <!-- Pulpal and Periapical Issues -->
+                        <optgroup label="PULPAL & PERIAPICAL ISSUES">
+                            <option value="PULPITIS_REVERSIBLE_IRREVERSIBLE">PULPITIS (REVERSIBLE/IRREVERSIBLE)</option>
+                            <option value="PERIAPICAL_ABSCESS">PERIAPICAL ABSCESS</option>
+                            <option value="INTERNAL_RESORPTION">INTERNAL RESORPTION</option>
+                            <option value="NON_VITAL_TOOTH">NON-VITAL TOOTH</option>
+                            <option value="FAILED_ROOT_CANAL_TREATMENT">FAILED ROOT CANAL TREATMENT</option>
+                        </optgroup>
+                        <!-- Restorative Issues -->
+                        <optgroup label="RESTORATIVE ISSUES">
+                            <option value="CHIPPED_TOOTH">CHIPPED TOOTH</option>
+                            <option value="DIASTEMA_MIDLINE_GAP">DIASTEMA (MIDLINE GAP)</option>
+                        </optgroup>
+                        <!-- Periodontal (Gum) Issues -->
+                        <optgroup label="PERIODONTAL (GUM) ISSSUES">
+                            <option value="GINGIVITIS">GINGIVITIS</option>
+                            <option value="PERIODONTITIS">PERIODONTITIS</option>
+                            <option value="BLEEDING_GUMS">BLEEDING GUMS</option>
+                            <option value="SWOLLEN_OR_INFLAMED_GUMS">SWOLLEN OR INFLAMED GUMS</option>
+                            <option value="GUM_RECESSION">GUM RECESSION</option>
+                            <option value="PUS_DISCHARGE_FROM_GUMS">PUS DISCHARGE FROM GUMS</option>
+                            <option value="LOOSE_TEETH_DUE_TO_GUM_ISSUES">LOOSE TEETH DUE TO GUM ISSUES</option>
+                            <option value="CALCULUS_TARTAR_DEPOSITS">CALCULUS / TARTAR DEPOSITS</option>
+                        </optgroup>
+                        <!-- Orthodontic Issues -->
+                        <optgroup label="ORTHODONTIC ISSUES">
+                            <option value="MALOCCLUSION_IMPROPER_BITE">MALOCCLUSION (IMPROPER BITE)</option>
+                            <option value="CROWDED_TEETH">CROWDED TEETH</option>
+                            <option value="SPACING_BETWEEN_TEETH">SPACING BETWEEN TEETH</option>
+                            <option value="OVERBITE">OVERBITE</option>
+                            <option value="UNDERBITE">UNDERBITE</option>
+                            <option value="CROSSBITE">CROSSBITE</option>
+                            <option value="OPEN_BITE">OPEN BITE</option>
+                            <option value="JAW_MISALIGNMENT">JAW MISALIGNMENT</option>
+                            <option value="DEEP_BITE">DEEP BITE</option>
+                            <option value="PROCLINED_UPPER_INCISORS">PROCLINED UPPER INCISORS</option>
+                            <option value="RETROCLINED_LOWER_INCISORS">RETROCLINED LOWER INCISORS</option>
+                            <option value="CLASS_I_MALOCCLUSION">CLASS I MALOCCLUSION</option>
+                            <option value="CLASS_II_DIVISION_1_MALOCCLUSION">CLASS II DIVISION 1 MALOCCLUSION</option>
+                            <option value="CLASS_II_DIVISION_2_MALOCCLUSION">CLASS II DIVISION 2 MALOCCLUSION</option>
+                            <option value="CLASS_III_MALOCCLUSION">CLASS III MALOCCLUSION</option>
+                            <option value="ANTERIOR_OPEN_BITE">ANTERIOR OPEN BITE</option>
+                            <option value="POSTERIOR_OPEN_BITE">POSTERIOR OPEN BITE</option>
+                            <option value="DENTAL_MIDLINE_DISCREPANCY">DENTAL MIDLINE DISCREPANCY</option>
+                            <option value="SKELETAL_CLASS_II">SKELETAL CLASS II</option>
+                            <option value="SKELETAL_CLASS_III">SKELETAL CLASS III</option>
+                        </optgroup>
+                        <!-- Surgical Issues -->
+                        <optgroup label="SURGICAL ISSUES">
+                            <option value="RETAINED_PRIMARY_TEETH">RETAINED PRIMARY TEETH</option>
+                            <option value="IMPACTED_PERMANENT_TEETH">IMPACTED PERMANENT TEETH</option>
+                            <option value="MISSING_TEETH">MISSING TEETH</option>
+                            <option value="ILL_FITTING_DENTURES">ILL-FITTING DENTURES</option>
+                            <option value="BROKEN_CROWN_OR_BRIDGE">BROKEN CROWN OR BRIDGE</option>
+                            <option value="RETENTION_PROBLEMS_IN_DENTURES">RETENTION PROBLEMS IN DENTURES</option>
+                            <option value="DIFFICULTY_IN_CHEWING">DIFFICULTY IN CHEWING</option>
+                            <option value="IMPACTED_WISDOM_TOOTH">IMPACTED WISDOM TOOTH</option>
+                            <option value="DENTAL_TRAUMA_FRACTURE_AVULSION">DENTAL TRAUMA (FRACTURE/AVULSION)</option>
+                            <option value="JAW_PAIN_TMJ_ISSUES">JAW PAIN / TMJ ISSUES</option>
+                            <option value="OROANTRAL_COMMUNICATION">OROANTRAL COMMUNICATION</option>
+                            <option value="CYST_OR_TUMOR_IN_JAW">CYST OR TUMOR IN JAW</option>
+                        </optgroup>
+                        <!-- Cosmetic Issues -->
+                        <optgroup label="COSMETIC ISSUES">
+                            <option value="STAINED_TEETH">STAINED TEETH</option>
+                            <option value="UNEVEN_TOOTH_SIZE_SHAPE">UNEVEN TOOTH SIZE/SHAPE</option>
+                            <option value="GUMMY_SMILE">GUMMY SMILE</option>
+                        </optgroup>
+                        <!-- Oral Mucosa / Pathology Issues -->
+                        <optgroup label="ORAL MUCOSA / PATHOLOGY ISSUES">
+                            <option value="MOUTH_ULCERS">MOUTH ULCERS</option>
+                            <option value="BURNING_MOUTH_SYNDROME">BURNING MOUTH SYNDROME</option>
+                            <option value="LEUKOPLAKIA">LEUKOPLAKIA</option>
+                            <option value="LICHEN_PLANUS">LICHEN PLANUS</option>
+                            <option value="CANDIDIASIS_ORAL_THRUSH">CANDIDIASIS (ORAL THRUSH)</option>
+                            <option value="GEOGRAPHIC_TONGUE">GEOGRAPHIC TONGUE</option>
+                        </optgroup>
+                        <!-- Other Oral Issues -->
+                        <optgroup label="OTHER ORAL ISSUES">
+                            <option value="BRUXISM_TEETH_GRINDING">BRUXISM (TEETH GRINDING)</option>
+                            <option value="THUMB_SUCKING_HABIT">THUMB-SUCKING HABIT</option>
+                            <option value="TONGUE_THRUSTING">TONGUE THRUSTING</option>
+                            <option value="BAD_BREATH_HALITOSIS">BAD BREATH (HALITOSIS)</option>
+                            <option value="DRY_MOUTH_XEROSTOMIA">DRY MOUTH (XEROSTOMIA)</option>
+                        </optgroup>
+                        <!-- Pediatric Dental Issues -->
+                        <optgroup label="PEDIATRIC DENTAL ISSUES">
+                            <option value="NURSING_BOTTLE_CARIES">NURSING BOTTLE CARIES</option>
+                            <option value="DELAYED_TOOTH_ERUPTION">DELAYED TOOTH ERUPTION</option>
+                            <option value="EARLY_TOOTH_LOSS">EARLY TOOTH LOSS</option>
+                            <option value="TEETHING_PROBLEMS">TEETHING PROBLEMS</option>
+                            <option value="RETAINED_MILK_TEETH">RETAINED MILK TEETH</option>
+                            <option value="ANTERIOR_CROSSBITE_IN_CHILD">ANTERIOR CROSSBITE IN CHILD</option>
+                            <option value="POSTERIOR_CROSSBITE_IN_CHILD">POSTERIOR_CROSSBITE IN CHILD</option>
+                            <option value="EARLY_CHILDHOOD_CAVITIES">EARLY CHILDHOOD CAVITIES</option>
+                            <option value="OVER_RETAINED_DECIDUOUS_TOOTH">OVER-RETAINED DECIDUOUS_TOOTH</option>
+                            <option value="MIDLINE_SHIFT_IN_CHILD">MIDLINE SHIFT IN CHILD</option>
+                            <option value="ENAMEL_HYPOPLASIA">ENAMEL HYPOPLASIA</option>
+                            <option value="RAMPANT_CARIES">RAMPANT CARIES</option>
+                            <option value="TONGUE_TIE_ANKYLOGLOSSIA">TONGUE TIE (ANKYLOGLOSSIA)</option>
+                            <option value="SPEECH_DELAY_RELATED_TO_ORAL_ISSUES">SPEECH DELAY RELATED TO ORAL ISSUES</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">TREATMENT PLAN</h3>
+                <div id="treatments-container">
+                    <!-- Dynamic treatment inputs will be added here by JavaScript -->
+                </div>
+                <button type="button" id="add-treatment-btn" class="btn btn-secondary mt-4">ADD ANOTHER TREATMENT</button>
+
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">MEDICINES PRESCRIBED</h3>
+                <div id="medicines-container">
+                    <!-- Dynamic medicine inputs will be added here by JavaScript -->
+                </div>
+                <button type="button" id="add-medicine-btn" class="btn btn-secondary mt-4">ADD ANOTHER MEDICINE</button>
+                <p class="text-sm text-gray-500 mt-2">CLICK <button type="button" id="edit-lists" class="text-blue-500 hover:underline">HERE</button> TO EDIT MASTER TREATMENT/MEDICINE LISTS.</p>
+
+
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">PROCEDURE DONE</h3>
+                <div class="form-group">
+                    <label for="treatment_done_notes" class="text-blue-800">NOTES:</label>
+                    <textarea id="treatment_done_notes" name="treatment_done_notes" rows="5" placeholder="ADD NOTES ABOUT TREATMENTS PERFORMED" oninput="this.value = this.value.toUpperCase()"></textarea>
+                </div>
+
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">NEXT APPOINTMENT</h3>
+                <div class="patient-form-grid">
+                    <div class="form-group">
+                        <label for="appointment_date" class="text-blue-800">DATE:</label>
+                        <input type="date" id="appointment_date" name="appointment_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="display_selected_appointment_time" class="text-blue-800">SELECTED TIME:</label>
+                        <input type="text" id="display_selected_appointment_time" readonly class="bg-gray-100 cursor-not-allowed">
+                        <input type="hidden" id="selected_appointment_time" name="appointment_time">
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label class="text-blue-800">AVAILABLE TIME SLOTS:</label>
+                    <div class="time-slots-container" id="appointment_time_slots">
+                        <!-- Time slots loaded by JS -->
+                    </div>
+                </div>
+
+                <!-- Payment Details - Now editable inputs -->
+                <h3 class="text-xl font-semibold text-gray-700 mt-8 mb-4">PAYMENT DETAILS</h3>
+                <div class="payment-summary">
+                    <div>
+                        <label for="total_treatment_cost" class="text-blue-800">TOTAL TREATMENT COST:</label>
+                        <input type="number" id="total_treatment_cost" name="total_treatment_cost" placeholder="0.00" value="0" oninput="calculateAggregatedBilling()">
+                    </div>
+                    <div>
+                        <label for="total_amount_paid" class="text-blue-800">TOTAL AMOUNT PAID:</label>
+                        <input type="number" id="total_amount_paid" name="total_amount_paid" placeholder="0.00" oninput="calculateAggregatedBilling()">
+                    </div>
+                     <div>
+                        <label for="amount_paid_today" class="text-blue-800">AMOUNT PAID TODAY:</label>
+                        <input type="number" id="amount_paid_today" name="amount_paid_today" placeholder="0.00" oninput="calculateAggregatedBilling()">
+                    </div>
+                    <div>
+                        <label for="balance_due" class="text-blue-800">BALANCE DUE:</label>
+                        <input type="text" id="balance_due" name="balance_due" value="₹ 0.00" readonly>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-end gap-4 mt-8">
+                    <button type="button" id="reset-form" class="btn bg-gray-500 hover:bg-gray-700 text-white py-3 px-6 text-lg rounded-xl shadow-lg transition-all duration-300">RESET FORM</button>
+                    <button type="submit" class="btn bg-blue-600 hover:bg-blue-800 text-white py-3 px-6 text-lg rounded-xl shadow-lg transition-all duration-300">SAVE PATIENT DATA</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Registered Patients Section -->
+        <section id="registered-patients-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">REGISTERED PATIENTS</h2>
+
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label for="registered_patient_search_input" class="block text-lg font-medium text-blue-800 mb-2">SEARCH PATIENT:</label>
+                <div class="flex gap-4">
+                    <input type="text" id="registered_patient_search_input" placeholder="SEARCH BY NAME OR CONTACT"
+                        class="flex-grow p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" oninput="this.value = this.value.toUpperCase()">
+                    <button id="registered_patient_search_btn" class="btn btn-primary">SEARCH</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg shadow">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>REG ID</th>
+                            <th>REG DATE</th>
+                            <th>PATIENT NAME</th>
+                            <th>AGE / GENDER</th>
+                            <th>CONTACT</th>
+                            <th>DOCTOR</th>
+                            <th>CHIEF COMPLAINT</th>
+                            <th>BALANCE DUE</th>
+                            <th>NEXT APPT</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registered-patients-table-body">
+                        <!-- Registered patients will be loaded here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Prescriptions Section (Overview) -->
+        <section id="prescription-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">ALL PRESCRIPTIONS</h2>
+            <p id="prescription-count-message" class="text-md text-gray-600 mb-6 text-center">
+                <!-- Prescription count will be updated here by JavaScript -->
+            </p>
+
+            <div id="doctor-prescriptions-list">
+                <!-- Doctor-wise prescriptions will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Master Lists Section -->
+        <section id="master-lists-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">MANAGE MASTER LISTS</h2>
+
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">MASTER TREATMENTS</h3>
+                <div class="flex mb-4 gap-4">
+                    <input type="text" id="newTreatmentName" placeholder="ADD NEW TREATMENT NAME" class="flex-grow p-3 border rounded-lg" oninput="this.value = this.value.toUpperCase()">
+                    <button onclick="addTreatment()" class="btn btn-primary">ADD TREATMENT</button>
+                </div>
+                <div id="masterTreatmentList" class="border rounded-lg p-4 bg-gray-50 max-h-64 overflow-y-auto">
+                    <!-- Master treatments will be rendered here -->
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-4">MASTER MEDICINES</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="text" id="newMedicineName" placeholder="MEDICINE NAME" class="p-3 border rounded-lg" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="newMedicineCategory" placeholder="CATEGORY (E.G., PAIN RELIEF)" class="p-3 border rounded-lg" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="newMedicineDefaultDosage" placeholder="DEFAULT DOSAGE (E.G., 1 TAB)" class="p-3 border rounded-lg" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" id="newMedicineDefaultTime" placeholder="DEFAULT TIME (E.G., TWICE A DAY)" class="p-3 border rounded-lg" oninput="this.value = this.value.toUpperCase()">
+                </div>
+                <button onclick="addMedicine()" class="btn btn-primary mb-4">ADD MEDICINE</button>
+                <div id="masterMedicineList" class="border rounded-lg p-4 bg-gray-50 max-h-64 overflow-y-auto">
+                    <!-- Master medicines will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Income Records Section -->
+        <section id="income-records-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">INCOME RECORDS</h2>
+
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label for="income_search_input" class="block text-lg font-medium text-blue-800 mb-2">SEARCH INCOME RECORDS:</label>
+                <div class="flex gap-4">
+                    <input type="text" id="income_search_input" placeholder="SEARCH BY DOCTOR, PATIENT, OR CONTACT"
+                        class="flex-grow p-3 border border-blue-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" oninput="this.value = this.value.toUpperCase()">
+                    <button id="income_search_btn" class="btn btn-primary">SEARCH</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg shadow">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>DOCTOR</th>
+                            <th>PATIENT NAME</th>
+                            <th>CONTACT</th>
+                            <th>COST</th>
+                            <th>PAID</th>
+                            <th>BALANCE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="income-records-table-body">
+                        <!-- Income records will be loaded here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="income-summary">
+                <div>TOTAL COST: <span id="total-cost-summary">₹ 0.00</span></div>
+                <div>TOTAL PAID: <span id="total-paid-summary">₹ 0.00</span></div>
+                <div>TOTAL BALANCE DUE: <span id="total-balance-summary" class="font-bold">₹ 0.00</span></div>
+            </div>
+        </section>
+
+        <!-- Prescription Preview Section (Moved here from being a modal) -->
+        <section id="prescription-view-section" class="section-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">PRESCRIPTION PREVIEW</h2>
+            <div id="prescription-modal-content">
+                <div class="clinic-header-pdf">
+                    <div class="clinic-header">
+                        <h1>🦷 INNODENT DENTAL CARE</h1>
+                        <p class="tagline">Excellence in Dental Care & Advanced Treatment Solutions</p>
+                        <p style="font-size: 1em; opacity: 0.8;">📍 104, TP Nagar, Korba | Mobile: 7389425553 | Email: DR.SAHILCHAWLA@GMAIL.COM</p>
+                    </div>
+                    <div class="doctors-header-container">
+                        <h2>👨‍⚕️ Our Expert Dental Team</h2>
+                        <h3>Committed to Your Healthy Smile</h3>
+                        <div class="doctors-list">
+                            <div class="doctor-info-header">
+                                <h3 class="doctor-name-header">DR. SAHIL CHAWLA, BDS</h3>
+                                <p class="doctor-specialty-header">MICROSCOPIC ROOT CANAL SPECIALIST</p>
+                            </div>
+                            <div class="doctor-info-header">
+                                <h3 class="doctor-name-header">DR. GARIMA CHAWLA, MDS</h3>
+                                <p class="doctor-specialty-header">PEDIATRIC AND PREVENTIVE DENTISTRY</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient-info-grid">
+                    <p><strong>REG ID:</strong> <span id="pdf-registration-id"></span></p>
+                    <p><strong>REG DATE:</strong> <span id="pdf-registration-date"></span></p>
+                    <p><strong>PRESCRIPTION DATE:</strong> <span id="pdf-prescription-date"></span></p>
+                    <p><strong>PATIENT:</strong> <span id="pdf-patient-name"></span></p>
+                    <p><strong>AGE/GENDER:</strong> <span id="pdf-age-gender"></span></p>
+                    <p><strong>CONTACT:</strong> <span id="pdf-patient-contact"></span></p>
+                    <p><strong>DOCTOR:</strong> <span id="pdf-doctor"></span></p>
+                    <p><strong>PURPOSE OF VISIT:</strong> <span id="pdf-purpose-of-visit"></span></p>
+                    <p><strong>NEXT APPT:</strong> <span id="pdf-appointment-time"></span></p>
+                    <p><strong>BALANCE DUE:</strong> <span id="pdf-balance-due"></span></p>
+                </div>
+
+                <h4 class="section-title">HEALTH HISTORY</h4>
+                <p id="pdf-previous-disease" class="health-issues-condensed">
+                    <!-- Health issues here -->
+                </p>
+
+                <h4 class="section-title">CHIEF COMPLAINT</h4>
+                <p class="mb-4 pl-4"><span id="pdf-treatment-planned-category"></span></p>
+
+                <h4 class="section-title">TREATMENT PLAN</h4>
+                <ul id="pdf-treatments" class="prescription-list">
+                    <!-- Treatments here -->
+                </ul>
+
+                <h4 class="section-title">MEDICINES PRESCRIBED</h4>
+                <ul id="pdf-medicines" class="prescription-list">
+                    <!-- Medicines here -->
+                </ul>
+
+                <h4 class="section-title">PROCEDURE DONE</h4>
+                <p class="mb-4 pl-4"><span id="pdf-treatment-done-notes"></span></p>
+
+                <div class="doctor-signature">
+                    <p>DR. <span id="pdf-doctor-info-small"></span></p>
+                    <p>(SIGNATURE)</p>
+                </div>
+
+                <div class="prescription-footer">
+                    <p>CONTACT: +91 7389425553 | EMAIL: DR.SAHILCHAWLA@GMAIL.COM</p>
+                </div>
+            </div>
+
+            <div class="pdf-actions">
+                <button id="whatsapp-share-prescription" class="btn" style="background-color: #25d366; color: white;">WHATSAPP SHARE</button>
+                <button id="print-prescription" class="btn" onclick="printPrescription()">PRINT PRESCRIPTION</button>
+                <button id="download-prescription" class="btn">DOWNLOAD PDF</button>
+                <button id="edit-prescription" class="btn bg-blue-500 hover:bg-blue-700 text-white">EDIT PRESCRIPTION</button>
+                <button class="close-modal-btn" onclick="closePrescriptionSection()">CLOSE</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Appointment Modal (Hidden by default) -->
+    <div id="appointment-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h4 class="text-center font-bold mb-6">BOOK APPOINTMENT</h4>
+            <form id="appointment-form" class="appointment-form">
+                <div class="form-group">
+                    <label for="modal_appointment_date">APPOINTMENT DATE:</label>
+                    <input type="date" id="modal_appointment_date" name="appointment_date"> <!-- Removed readonly -->
+                </div>
+                <div class="form-group">
+                    <label for="modal_patient_search">SEARCH PATIENT CONTACT (Optional):</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="modal_patient_search" placeholder="10-DIGIT CONTACT NO."
+                            pattern="[0-9]{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                        <button type="button" onclick="searchPatientInModal()" class="btn bg-blue-500 text-white px-4 py-2 rounded-md">SEARCH</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="modal_patient_name">PATIENT NAME:</label>
+                    <input type="text" id="modal_patient_name" name="patient_name" placeholder="ENTER PATIENT NAME" required oninput="this.value = this.value.toUpperCase()">
+                </div>
+                <div class="form-group">
+                    <label for="modal_patient_contact">CONTACT NUMBER:</label>
+                    <input type="text" id="modal_patient_contact" name="patient_contact" pattern="[0-9]{10}" placeholder="10-DIGIT NUMBER" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                </div>
+                <div class="form-group">
+                    <label for="modal_doctor_select">DOCTOR:</label>
+                    <select id="modal_doctor_select" name="doctor" required>
+                        <option value="">SELECT DOCTOR</option>
+                        <option value="DR. SAHIL CHAWLA, BDS">DR. SAHIL CHAWLA</option>
+                        <option value="DR. GARIMA CHAWLA, MDS">DR. GARIMA CHAWLA</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="modal_purpose_of_visit">PURPOSE OF VISIT:</label>
+                    <select id="modal_purpose_of_visit" name="purpose_of_visit" required>
+                        <option value="">SELECT PURPOSE</option>
+                        <option value="FIRST VISIT">FIRST VISIT</option>
+                        <option value="FOLLOW UP">FOLLOW UP</option>
+                        <option value="CONSULTATION">CONSULTATION</option>
+                        <option value="EMERGENCY">EMERGENCY</option>
+                        <option value="CHECK-UP">REGULAR CHECK-UP</option>
+                        <option value="PROCEDURE">PROCEDURE</option>
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="modal_selected_appointment_time_display">SELECTED TIME:</label>
+                    <input type="text" id="modal_selected_appointment_time_display" readonly class="bg-gray-100 cursor-not-allowed">
+                    <input type="hidden" id="modal_selected_appointment_time_hidden" name="appointment_time">
+                </div>
+                <div class="form-group mt-2">
+                    <label>AVAILABLE TIME SLOTS:</label>
+                    <div class="time-slots-container" id="modal_appointment_time_slots">
+                        <!-- Time slots will be generated here -->
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="bookAppointment()" class="book-btn">BOOK APPOINTMENT</button>
+                    <button type="button" onclick="closeAppointmentModal()" class="cancel-btn">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Message Modal (Hidden by default) -->
+    <div id="custom-message-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <h4 id="custom-modal-title">MESSAGE</h4>
+            <p id="custom-modal-message">THIS IS A CUSTOM MESSAGE.</p>
+            <button type="button" onclick="closeCustomMessageModal()" class="close-btn">OK</button>
+        </div>
+    </div>
+
+    <script>
+    // Global data stores (simulate backend data)
+    let patients = JSON.parse(localStorage.getItem('patients')) || {};
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    let financialRecords = JSON.parse(localStorage.getItem('financialRecords')) || []; // Financial Records storage
+    let currentYear, currentMonth;
+
+    // Global flag to prevent unwanted form resets after validation fails due to environment refresh
+    window.preventFormReset = false;
+    // Global flag to track explicit user form submission
+    let isUserSubmitting = false;
+
+
+    // Map for doctor names to their custom prefixes for registration IDs
+    const doctorPrefixMap = {
+        "DR. SAHIL CHAWLA, BDS": "SAH",
+        "DR. GARIMA CHAWLA, MDS": "GAR"
+    };
+
+    // Map for dental issues to suggested treatments. Keys MUST match dropdown values (uppercase).
+    const dentalIssueTreatmentMap = {
+        "TOOTHACHE": "PAIN MANAGEMENT",
+        "TOOTH_SENSITIVITY_HOT_COLD": "DESENSITIZATION",
+        "CRACKED_OR_FRACTURED_TOOTH": "RESTORATION (FILLING/CROWN)",
+        "DISCOLORED_TOOTH": "TEETH WHITENING",
+        "WORN_TEETH_ATTRITION": "OCCLUSAL ADJUSTMENT",
+        "TOOTH_MOBILITY": "SPLINTING",
+        "FOOD_LODGEMENT": "FILLING (COMPOSITE)",
+        "PULPITIS_REVERSIBLE_IRREVERSIBLE": "ROOT CANAL TREATMENT (RCT)",
+        "PERIAPICAL_ABSCESS": "ROOT CANAL TREATMENT (RCT)",
+        "INTERNAL_RESORPTION": "ROOT CANAL TREATMENT (RCT)",
+        "NON_VITAL_TOOTH": "ROOT CANAL TREATMENT (RCT)",
+        "FAILED_ROOT_CANAL_TREATMENT": "RETREATMENT (ROOT CANAL)",
+        "CHIPPED_TOOTH": "FILLING (COMPOSITE)",
+        "DIASTEMA_MIDLINE_GAP": "ORTHODONTIC TREATMENT (BRACES)",
+        "GINGIVITIS": "SCALING AND POLISHING",
+        "PERIODONTITIS": "PERIODONTITIS",
+        "BLEEDING_GUMS": "BLEEDING GUMS",
+        "SWOLLEN_OR_INFLAMED_GUMS": "EXAMINATION",
+        "GUM_RECESSION": "GUM GRAFTING",
+        "PUS_DISCHARGE_FROM_GUMS": "PERIODONTAL FLAP SURGERY",
+        "LOOSE_TEETH_DUE_TO_GUM_ISSUES": "SPLINTING",
+        "CALCULUS_TARTAR_DEPOSITS": "SCALING AND POLISHING",
+        "MALOCCLUSION_IMPROPER_BITE": "MALOCCLUSION (IMPROPER BITE)",
+        "CROWDED_TEETH": "CROWDED TEETH",
+        "SPACING_BETWEEN_TEETH": "SPACING BETWEEN TEETH",
+        "OVERBITE": "OVERBITE",
+        "UNDERBITE": "UNDERBITE",
+        "CROSSBITE": "CROSSBITE",
+        "OPEN_BITE": "OPEN BITE",
+        "JAW_MISALIGNMENT": "JAW MISALIGNMENT",
+        "DEEP_BITE": "DEEP BITE",
+        "PROCLINED_UPPER_INCISORS": "PROCLINED UPPER INCISORS",
+        "RETROCLINED_LOWER_INCISORS": "RETROCLINED LOWER INCISORS",
+        "CLASS_I_MALOCCLUSION": "CLASS I MALOCCLUSION",
+        "CLASS_II_DIVISION_1_MALOCCLUSION": "CLASS II DIVISION 1 MALOCCLUSION",
+        "CLASS_II_DIVISION_2_MALOCCLUSION": "CLASS II DIVISION 2 MALOCCLUSION",
+        "CLASS_III_MALOCCLUSION": "CLASS III MALOCCLUSION",
+        "ANTERIOR_OPEN_BITE": "ANTERIOR OPEN BITE",
+        "POSTERIOR_OPEN_BITE": "POSTERIOR OPEN BITE",
+        "DENTAL_MIDLINE_DISCREPANCY": "DENTAL MIDLINE DISCREPANCY",
+        "SKELETAL_CLASS_II": "SKELETAL CLASS II",
+        "SKELETAL_CLASS_III": "SKELETAL CLASS III",
+        "RETAINED_PRIMARY_TEETH": "RETAINED PRIMARY TEETH",
+        "IMPACTED_PERMANENT_TEETH": "IMPACTED PERMANENT TEETH",
+        "MISSING_TEETH": "MISSING TEETH",
+        "ILL_FITTING_DENTURES": "ILL-FITTING DENTURES",
+        "BROKEN_CROWN_OR_BRIDGE": "BROKEN CROWN OR BRIDGE",
+        "RETENTION_PROBLEMS_IN_DENTURES": "RETENTION PROBLEMS IN DENTURES",
+        "DIFFICULTY_IN_CHEWING": "DIFFICULTY IN CHEWING",
+        "IMPACTED_WISDOM_TOOTH": "IMPACTED WISDOM TOOTH",
+        "DENTAL_TRAUMA_FRACTURE_AVULSION": "DENTAL TRAUMA (FRACTURE/AVULSION)",
+        "JAW_PAIN_TMJ_ISSUES": "JAW PAIN / TMJ ISSUES",
+        "OROANTRAL_COMMUNICATION": "OROANTRAL COMMUNICATION",
+        "CYST_OR_TUMOR_IN_JAW": "CYST OR TUMOR IN JAW",
+        "STAINED_TEETH": "TEETH WHITENING",
+        "UNEVEN_TOOTH_SIZE_SHAPE": "COSMETIC BONDING",
+        "GUMMY_SMILE": "LASER GUM CONTOURING",
+        "MOUTH_ULCERS": "TOPICAL MEDICATION",
+        "BURNING_MOUTH_SYNDROME": "DIAGNOSIS AND MANAGEMENT",
+        "LEUKOPLAKIA": "BIOPSY AND MONITORING",
+        "LICHEN_PLANUS": "TOPICAL STEROIDS",
+        "CANDIDIASIS_ORAL_THRUSH": "ANTIFUNGAL MEDICATION",
+        "GEOGRAPHIC_TONGUE": "SYMPTOMATIC RELIEF",
+        "BRUXISM_TEETH_GRINDING": "NIGHT GUARD",
+        "THUMB_SUCKING_HABIT": "HABIT BREAKING APPLIANCE",
+        "TONGUE_THRUSTING": "MYOFUNCTIONAL THERAPY",
+        "BAD_BREATH_HALITOSIS": "ORAL HYGIENE INSTRUCTION",
+        "DRY_MOUTH_XEROSTOMIA": "SALIVARY STIMULANTS",
+        "NURSING_BOTTLE_CARIES": "RESTORATION",
+        "DELAYED_TOOTH_ERUPTION": "MONITORING AND INTERVENTION",
+        "EARLY_TOOTH_LOSS": "SPACE MAINTAINER",
+        "TEETHING_PROBLEMS": "SYMPTOMATIC RELIEF",
+        "RETAINED_MILK_TEETH": "EXTRACTION",
+        "ANTERIOR_CROSSBITE_IN_CHILD": "ANTERIOR CROSSBITE IN CHILD",
+        "POSTERIOR_CROSSBITE_IN_CHILD": "POSTERIOR_CROSSBITE IN CHILD",
+        "EARLY_CHILDHOOD_CAVITIES": "RESTORATION",
+        "OVER_RETAINED_DECIDUOUS_TOOTH": "EXTRACTION",
+        "MIDLINE_SHIFT_IN_CHILD": "MIDLINE SHIFT IN CHILD",
+        "ENAMEL_HYPOPLASIA": "ENAMEL HYPOPLASIA",
+        "RAMPANT_CARIES": "MULTIPLE RESTORATIONS",
+        "TONGUE_TIE_ANKYLOGLOSSIA": "FRENECTOMY",
+        "SPEECH_DELAY_RELATED_TO_ORAL_ISSUES": "CONSULT SPEECH THERAPIST"
+    };
+
+    // New map for treatments to suggested medicines
+    const treatmentMedicineMap = {
+        "PAIN MANAGEMENT": [
+            { name: "IBUPROFEN", category: "NSAID", dosage: "400 MG", time: "THRICE A DAY AFTER FOOD" },
+            { name: "PARACETAMOL", category: "ANALGESIC", dosage: "500 MG", time: "TWICE A DAY AFTER FOOD" }
+        ],
+        "ROOT CANAL TREATMENT (RCT)": [
+            { name: "AMOXICILLIN", category: "ANTIBIOTIC", dosage: "500 MG", time: "THRICE A DAY FOR 5 DAYS" },
+            { name: "METRONIDAZOLE", category: "ANTIBIOTIC", dosage: "400 MG", time: "TWICE A DAY FOR 5 DAYS" },
+            { name: "IBUPROFEN", category: "NSAID", dosage: "400 MG", time: "THRICE A DAY AFTER FOOD" }
+        ],
+        "SCALING AND POLISHING": [
+            { name: "CHLORHEXIDINE MOUTHWASH", category: "ANTISEPTIC", dosage: "10 ML", time: "TWICE A DAY FOR 7 DAYS" }
+        ],
+        "RESTORATION (FILLING/CROWN)": [
+            { name: "IBUPROFEN", category: "NSAID", dosage: "400 MG", time: "THRICE A DAY AFTER FOOD" }
+        ],
+        "EXTRACTION": [
+            { name: "AMOXICILLIN", category: "ANTIBIOTIC", dosage: "500 MG", time: "THRICE A DAY FOR 5 DAYS" },
+            { name: "IBUPROFEN", category: "NSAID", dosage: "400 MG", time: "THRICE A DAY AFTER FOOD" }
+        ],
+        // Add more mappings as needed
+    };
+
+    // Global master lists for treatments and medicines, loaded from localStorage
+    let masterTreatments = JSON.parse(localStorage.getItem('masterTreatments')) || [];
+    let masterMedicines = JSON.parse(localStorage.getItem('masterMedicines')) || [];
+
+
+    // Function to show a custom message modal
+    function showCustomMessageModal(title, message, type = 'info') {
+        const modal = document.getElementById('custom-message-modal');
+        // Ensure modal and its content exist before trying to querySelector on them
+        if (!modal) {
+            console.error('Custom message modal HTML structure not found.');
+            return;
+        }
+        const modalContent = modal.querySelector('.custom-modal-content');
+        if (!modalContent) {
+            console.error('Custom message modal content HTML structure not found.');
+            return;
+        }
+
+        // Get the title and message elements using their IDs
+        const modalTitle = document.getElementById('custom-modal-title');
+        const modalMessage = document.getElementById('custom-modal-message');
+
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalMessage) modalMessage.textContent = message;
+
+
+        modalContent.classList.remove('success', 'error', 'info', 'warning');
+        modalContent.classList.add(type);
+
+        modal.classList.add('active');
+    }
+
+    // Function to close the custom message modal
+    function closeCustomMessageModal() {
+        document.getElementById('custom-message-modal').classList.remove('active');
+    }
+
+    // Function to format date as "Day Name, DD-MM-YYYY"
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        // Using toLocaleDateString with options for full weekday name, 2-digit day/month, and 4-digit year
+        const options = { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formatted = date.toLocaleDateString('en-GB', options); // 'en-GB' gives DD/MM/YYYY structure
+        return formatted.replace(/\//g, '-'); // Replace slashes with dashes
+    }
+
+    // Function to format time as HH:MM AM/PM
+    function formatTime(timeString) {
+        if (!timeString) return '';
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        return `${formattedHours}:${minutes < 10 ? '0' + minutes : minutes} ${ampm}`;
+    }
+
+    // Helper to capitalize first letter of each word
+    function capitalizeWords(str) {
+        if (!str) return '';
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    }
+
+
+    // Function to generate unique registration ID based on doctor prefix and current timestamp
+    function generateRegistrationId(doctorName) {
+        const prefix = doctorPrefixMap[doctorName] || "REG"; // Default to REG if doctor not found
+        const timestamp = new Date().getTime();
+        return `${prefix}-${timestamp.toString().slice(-6)}`; // Use last 6 digits of timestamp for brevity
+    }
+
+    // Function to navigate between sections
+    function navigate(sectionId) {
+        // Hide all sections first
+        document.querySelectorAll('.section-content').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Show the requested section
+        document.getElementById(sectionId).style.display = 'block';
+
+        // Update active navigation button
+        document.querySelectorAll('nav button').forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Only attempt to add 'active' class if a corresponding nav button exists
+        const navButton = document.querySelector(`nav button[onclick="navigate('${sectionId}')"]`);
+        if (navButton) {
+            navButton.classList.add('active');
+        }
+
+
+        // Logic to re-render content when navigating
+        if (sectionId === 'appointments-section') {
+            renderTodaysDoctorAppointments(); // Render today's appointments first
+            renderCalendar();
+            renderUpcomingAppointments();
+        } else if (sectionId === 'registered-patients-section') {
+            renderRegisteredPatientsTable();
+        } else if (sectionId === 'prescription-section') {
+            renderPrescriptionsOverview();
+        } else if (sectionId === 'master-lists-section') {
+            renderMasterTreatmentList();
+            renderMasterMedicineList();
+        } else if (sectionId === 'income-records-section') {
+            renderIncomeRecordsTable();
+        } else if (sectionId === 'patient-form-section') {
+            // Check if it's not due to environment refresh attempting to reset
+            if (!window.preventFormReset) {
+                resetPatientForm();
+            }
+            window.preventFormReset = false; // Reset the flag after checking
+        }
+        // Ensure prescription-view-section is hidden unless explicitly called by showPrescriptionPreview
+        if (sectionId !== 'prescription-view-section') {
+             document.getElementById('prescription-view-section').style.display = 'none';
+        }
+    }
+
+    // Initialize calendar to current month and render it
+    function initializeCalendar() {
+        const today = new Date();
+        currentYear = today.getFullYear();
+        currentMonth = today.getMonth(); // 0-indexed
+        renderCalendar();
+    }
+
+    // Render the calendar for the current month
+    function renderCalendar() {
+        const calendarGrid = document.getElementById('calendar-grid');
+        const currentMonthDisplay = document.getElementById('current-month');
+        calendarGrid.innerHTML = ''; // Clear previous days
+
+        const date = new Date(currentYear, currentMonth, 1);
+        const firstDayOfMonth = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Month names for display
+        const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+                            "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+        currentMonthDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        // Today's date for highlighting
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+        // Day names
+        const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        dayNames.forEach(day => {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('calendar-cell', 'day-name');
+            dayCell.textContent = day;
+            calendarGrid.appendChild(dayCell);
+        });
+
+        // Fill in leading empty cells for days before the 1st
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('calendar-cell');
+            calendarGrid.appendChild(emptyCell);
+        }
+
+        // Fill in days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('calendar-cell');
+            dayCell.textContent = day;
+
+            const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+            // Highlight today's date
+            if (fullDate === todayStr) {
+                dayCell.classList.add('today');
+            }
+
+            // Mark Sundays
+            if (new Date(currentYear, currentMonth, day).getDay() === 0) {
+                dayCell.classList.add('sunday');
+            }
+
+            // Add existing appointments to the calendar day
+            const dayAppointments = appointments.filter(app => app.appointmentDate === fullDate);
+            if (dayAppointments.length > 0) {
+                const appCount = document.createElement('span');
+                appCount.classList.add('appointment');
+                appCount.textContent = `${dayAppointments.length} Appt${dayAppointments.length > 1 ? 's' : ''}`;
+                dayCell.appendChild(appCount);
+            }
+
+            // Make day cells clickable to view/book appointments
+            dayCell.dataset.date = fullDate; // Store the full date
+            dayCell.onclick = (event) => openAppointmentModal(event.currentTarget.dataset.date);
+
+            calendarGrid.appendChild(dayCell);
+        }
+        renderUpcomingAppointments(); // Re-render upcoming appointments after calendar updates
+    }
+
+    // Change month in calendar
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    }
+
+    // Render upcoming appointments list (excluding today)
+    function renderUpcomingAppointments() {
+        const upcomingList = document.getElementById('upcoming-appointments-list');
+        upcomingList.innerHTML = '';
+
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(now.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0); // Start of tomorrow
+
+        // Sort appointments by date and then time, ensuring only from tomorrow onwards
+        const sortedAppointments = appointments.filter(app => {
+            const appDateTime = new Date(`${app.appointmentDate}T${app.appointmentTime}`);
+            return appDateTime >= tomorrow; // Only show appointments from tomorrow
+        }).sort((a, b) => {
+            const dateA = new Date(`${a.appointmentDate}T${a.appointmentTime}`);
+            const dateB = new Date(`${b.appointmentDate}T${b.appointmentTime}`);
+            return dateA - dateB;
+        });
+
+        if (sortedAppointments.length === 0) {
+            upcomingList.innerHTML = '<li>NO UPCOMING APPOINTMENTS.</li>';
+            return;
+        }
+
+        sortedAppointments.slice(0, 5).forEach(app => { // Show top 5 upcoming
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <strong>${app.patientName}</strong><br>
+                <p>CONTACT: ${app.patientContact}</p>
+                <p>DOCTOR: ${app.doctor}</p>
+                <p>DATE: ${formatDate(app.appointmentDate)} at ${formatTime(app.appointmentTime)}</p>
+            `;
+            upcomingList.appendChild(listItem);
+        });
+    }
+
+    // Render today's appointments grouped by doctor
+    function renderTodaysDoctorAppointments() {
+        const todaysAppointmentsDiv = document.getElementById('todays-doctor-appointments');
+        const doctorAppointmentsList = document.getElementById('doctor-appointments-list');
+        doctorAppointmentsList.innerHTML = '';
+
+        const today = new Date();
+        const todayDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+        const todaysAppointments = appointments.filter(app => app.appointmentDate === todayDateStr)
+                                            .sort((a, b) => a.appointmentTime.localeCompare(b.appointmentTime));
+
+        if (todaysAppointments.length === 0) {
+            todaysAppointmentsDiv.style.display = 'none';
+            return;
+        }
+
+        todaysAppointmentsDiv.style.display = 'block';
+
+        const appointmentsByDoctor = {};
+        todaysAppointments.forEach(app => {
+            if (!appointmentsByDoctor[app.doctor]) {
+                appointmentsByDoctor[app.doctor] = [];
+            }
+            appointmentsByDoctor[app.doctor].push(app);
+        });
+
+        for (const doctor in appointmentsByDoctor) {
+            const doctorGroupDiv = document.createElement('div');
+            doctorGroupDiv.classList.add('doctor-group');
+            doctorGroupDiv.innerHTML = `<h3 class="text-lg font-bold">${doctor}</h3><ul></ul>`;
+            const ul = doctorGroupDiv.querySelector('ul');
+
+            appointmentsByDoctor[doctor].forEach(app => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <strong>${app.patientName}</strong><br>
+                    <p>CONTACT: ${app.patientContact}</p>
+                    <p>TIME: ${formatTime(app.appointmentTime)}</p>
+                `;
+                ul.appendChild(listItem);
+            });
+            doctorAppointmentsList.appendChild(doctorGroupDiv);
+        }
+    }
+
+    // Open the appointment modal for a specific date
+    function openAppointmentModal(date) {
+        document.getElementById('modal_appointment_date').value = date;
+        document.getElementById('modal_patient_search').value = '';
+        document.getElementById('modal_patient_name').value = '';
+        document.getElementById('modal_patient_contact').value = '';
+        document.getElementById('modal_doctor_select').value = '';
+        document.getElementById('modal_purpose_of_visit').value = ''; // Reset purpose of visit
+        document.getElementById('modal_selected_appointment_time_display').value = '';
+        document.getElementById('modal_selected_appointment_time_hidden').value = '';
+
+        // Add event listener for date change in modal date picker
+        document.getElementById('modal_appointment_date').onchange = (event) => {
+            const newDate = event.target.value;
+            generateTimeSlots('modal_appointment_time_slots', newDate, 'modal_selected_appointment_time_display', 'modal_selected_appointment_time_hidden');
+        };
+
+        generateTimeSlots('modal_appointment_time_slots', date, 'modal_selected_appointment_time_display', 'modal_selected_appointment_time_hidden'); // Generate slots for modal
+
+        document.getElementById('appointment-modal-overlay').classList.add('active');
+    }
+
+    // Close the appointment modal
+    function closeAppointmentModal() {
+        document.getElementById('appointment-modal-overlay').classList.remove('active');
+    }
+
+    // Search patient in modal by contact
+    function searchPatientInModal() {
+        const contact = document.getElementById('modal_patient_search').value.trim();
+        const patient = patients[contact];
+
+        if (patient) {
+            document.getElementById('modal_patient_name').value = patient.patient_name;
+            document.getElementById('modal_patient_contact').value = patient.patient_contact;
+            showCustomMessageModal('PATIENT FOUND', `Patient ${patient.patient_name} loaded.`, 'success');
+        } else {
+            document.getElementById('modal_patient_name').value = 'NEW PATIENT';
+            document.getElementById('modal_patient_contact').value = contact;
+            showCustomMessageModal('PATIENT NOT FOUND', 'No patient found with this contact. Please proceed to REGISTER PATIENT section if you want to save their details for future use.', 'warning');
+        }
+    }
+
+    // Book appointment function (from modal)
+    function bookAppointment() {
+        const appointmentDate = document.getElementById('modal_appointment_date').value;
+        const patientName = document.getElementById('modal_patient_name').value;
+        const patientContact = document.getElementById('modal_patient_contact').value;
+        const doctor = document.getElementById('modal_doctor_select').value;
+        const purposeOfVisit = document.getElementById('modal_purpose_of_visit').value; // Get purpose of visit from modal
+        const appointmentTime = document.getElementById('modal_selected_appointment_time_hidden').value;
+
+        if (!patientName || !patientContact || !doctor || !appointmentTime || !purposeOfVisit) { // Purpose of visit is required here
+            showCustomMessageModal('ERROR', 'PLEASE FILL IN ALL APPOINTMENT DETAILS (INCLUDING PURPOSE OF VISIT).', 'error');
+            return;
+        }
+
+        // Check for existing appointment for the same doctor at the same time
+        const isBooked = appointments.some(app =>
+            app.appointmentDate === appointmentDate &&
+            app.appointmentTime === appointmentTime &&
+            app.doctor === doctor
+        );
+
+        if (isBooked) {
+            showCustomMessageModal('BOOKING FAILED', 'THIS TIME SLOT IS ALREADY BOOKED FOR THE SELECTED DOCTOR. PLEASE CHOOSE ANOTHER SLOT.', 'error');
+            return;
+        }
+
+        const newAppointment = {
+            id: crypto.randomUUID(), // Generate a unique ID for the appointment
+            patientName: patientName,
+            patientContact: patientContact,
+            doctor: doctor,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime,
+            purposeOfVisit: purposeOfVisit // Store purpose of visit
+        };
+
+        appointments.push(newAppointment);
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        showCustomMessageModal('APPOINTMENT BOOKED', `APPOINTMENT FOR ${patientName} WITH ${doctor} ON ${formatDate(appointmentDate)} AT ${formatTime(appointmentTime)} FOR ${purposeOfVisit} HAS BEEN BOOKED SUCCESSFULLY.`, 'success');
+        closeAppointmentModal();
+        renderCalendar(); // Re-render calendar to show new appointment
+        renderTodaysDoctorAppointments(); // Re-render today's appointments
+        renderUpcomingAppointments(); // Re-render upcoming appointments
+    }
+
+
+    // Function to generate time slots
+    function generateTimeSlots(containerId, date, displayInputId, hiddenInputId) {
+        const timeSlotsContainer = document.getElementById(containerId);
+        timeSlotsContainer.innerHTML = '';
+        const selectedTimeDisplay = document.getElementById(displayInputId);
+        const selectedTimeHidden = document.getElementById(hiddenInputId);
+
+        const now = new Date();
+        const todayDate = now.toISOString().slice(0, 10);
+
+        selectedTimeDisplay.value = '';
+        selectedTimeHidden.value = '';
+
+        const startHour = 9; // 9 AM
+        const endHour = 20; // 8 PM (20:00)
+        const interval = 30; // 30 minutes
+
+        for (let hour = startHour; hour <= endHour; hour++) {
+            for (let minute = 0; minute < 60; minute += interval) {
+                const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+                const displayTime = formatTime(time);
+
+                const slotDateTime = new Date(`${date}T${time}`);
+                let isDisabled = false;
+                let isBooked = false;
+
+                // Disable past times for today
+                if (date === todayDate && slotDateTime <= now) {
+                    isDisabled = true;
+                }
+
+                // Check if the slot is already booked for *any* doctor for the selected date
+                const bookedForDate = appointments.some(app =>
+                    app.appointmentDate === date && app.appointmentTime === time
+                );
+
+                if (bookedForDate) {
+                    isBooked = true;
+                    isDisabled = true; // Booked slots are also disabled
+                }
+
+                const slotButton = document.createElement('button');
+                slotButton.type = 'button';
+                slotButton.classList.add('slot-btn');
+                slotButton.textContent = displayTime;
+                slotButton.value = time;
+
+                if (isDisabled) {
+                    slotButton.disabled = true;
+                    slotButton.classList.add('disabled-past');
+                }
+                if (isBooked) {
+                    slotButton.classList.add('booked-slot');
+                }
+
+
+                slotButton.onclick = () => {
+                    // Remove 'selected' from all other buttons in the same container
+                    timeSlotsContainer.querySelectorAll('.slot-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    // Add 'selected' to the clicked button
+                    slotButton.classList.add('selected');
+                    // Update the display and hidden input fields
+                    selectedTimeDisplay.value = displayTime;
+                    selectedTimeHidden.value = time;
+                };
+                timeSlotsContainer.appendChild(slotButton);
+            }
+        }
+    }
+
+
+    // Function to calculate and update total costs and balances
+    function calculateAggregatedBilling() {
+        const totalTreatmentCostInput = document.getElementById('total_treatment_cost');
+        const totalAmountPaidInput = document.getElementById('total_amount_paid');
+        const amountPaidTodayInput = document.getElementById('amount_paid_today');
+        const balanceDueInput = document.getElementById('balance_due');
+
+        // Use parseFloat with || 0 to handle empty string inputs gracefully
+        let totalTreatmentCost = parseFloat(totalTreatmentCostInput.value) || 0;
+        let totalAmountPaid = parseFloat(totalAmountPaidInput.value) || 0;
+        let amountPaidToday = parseFloat(amountPaidTodayInput.value) || 0;
+
+        // Ensure amount paid today does not exceed remaining balance for today's payment
+        if (amountPaidToday > totalTreatmentCost - totalAmountPaid) {
+            amountPaidToday = Math.max(0, totalTreatmentCost - totalAmountPaid);
+            amountPaidTodayInput.value = amountPaidToday.toFixed(2);
+        }
+
+        // Update total amount paid with today's payment
+        totalAmountPaid = (totalAmountPaid - parseFloat(amountPaidTodayInput.dataset.previousValue || 0)) + amountPaidToday;
+        totalAmountPaidInput.value = totalAmountPaid.toFixed(2);
+        amountPaidTodayInput.dataset.previousValue = amountPaidToday.toFixed(2); // Store current value as previous for next calculation
+
+        let balanceDue = totalTreatmentCost - totalAmountPaid;
+
+        balanceDueInput.value = `₹ ${balanceDue.toFixed(2)}`;
+        if (balanceDue > 0) {
+            balanceDueInput.classList.add('balance-due-text');
+        } else {
+            balanceDueInput.classList.remove('balance-due-text');
+        }
+    }
+
+
+    // Event listener for "Add Another Treatment" button
+    document.getElementById('add-treatment-btn').addEventListener('click', addTreatmentInput);
+
+    // Function to populate medicines based on a selected treatment
+    function populateMedicinesForTreatment(treatmentName) {
+        const medicinesContainer = document.getElementById('medicines-container');
+        const suggestedMedicines = treatmentMedicineMap[treatmentName];
+
+        if (suggestedMedicines && suggestedMedicines.length > 0) {
+            suggestedMedicines.forEach(suggestedMed => {
+                // Check if the medicine is already added to prevent duplicates
+                const isAlreadyAdded = Array.from(medicinesContainer.querySelectorAll('input[name="medicine_name"]')).some(input =>
+                    input.value.toUpperCase() === suggestedMed.name.toUpperCase()
+                );
+                if (!isAlreadyAdded) {
+                    addMedicineInput(suggestedMed);
+                }
+            });
+        }
+    }
+
+    // Add a new treatment input row
+    function addTreatmentInput(treatmentName = '', treatmentCost = '') {
+        const container = document.getElementById('treatments-container');
+        const treatmentCount = container.children.length;
+
+        const div = document.createElement('div');
+        div.classList.add('treatment-item');
+        div.innerHTML = `
+            <div class="form-group">
+                <label for="treatment_name_${treatmentCount}">TREATMENT NAME:</label>
+                <input type="text" id="treatment_name_${treatmentCount}" name="treatment_name" list="masterTreatmentsList" value="${treatmentName}" placeholder="E.G., SCALING" oninput="this.value = this.value.toUpperCase()">
+                <datalist id="masterTreatmentsList"></datalist>
+            </div>
+            <div class="form-group">
+                <label for="treatment_cost_${treatmentCount}">COST (₹):</label>
+                <input type="number" id="treatment_cost_${treatmentCount}" name="treatment_cost" value="${treatmentCost}" min="0" placeholder="0.00" oninput="calculateTotalTreatmentCost()">
+            </div>
+            <button type="button" class="remove-treatment-btn" onclick="removeTreatmentInput(this)">X</button>
+        `;
+        container.appendChild(div);
+        updateMasterTreatmentDatalist(); // Update datalist for new input
+
+        // Add event listener to the new cost input for immediate calculation
+        div.querySelector(`#treatment_cost_${treatmentCount}`).addEventListener('input', calculateTotalTreatmentCost);
+
+        // Add change listener to the treatment name input to populate medicines
+        const treatmentNameInput = div.querySelector(`input[name="treatment_name"]`);
+        treatmentNameInput.addEventListener('change', function() {
+            const selectedTreatment = this.value.trim().toUpperCase();
+            populateMedicinesForTreatment(selectedTreatment);
+        });
+
+        calculateTotalTreatmentCost(); // Recalculate immediately after adding/pre-filling
+    }
+
+    // Remove a treatment input row
+    function removeTreatmentInput(button) {
+        button.closest('.treatment-item').remove();
+        calculateTotalTreatmentCost(); // Recalculate after removing
+    }
+
+    // Calculate total treatment cost from all dynamic inputs
+    function calculateTotalTreatmentCost() {
+        let totalCost = 0;
+        document.querySelectorAll('input[name="treatment_cost"]').forEach(input => {
+            totalCost += parseFloat(input.value) || 0;
+        });
+        document.getElementById('total_treatment_cost').value = totalCost.toFixed(2);
+        calculateAggregatedBilling(); // Trigger overall billing calculation
+    }
+
+
+    // Event listener for "Add Another Medicine" button
+    document.getElementById('add-medicine-btn').addEventListener('click', () => addMedicineInput());
+
+    // Add a new medicine input row
+    function addMedicineInput(medicine = { name: '', category: '', dosage: '', time: '' }) {
+        const container = document.getElementById('medicines-container');
+        const medicineCount = container.children.length;
+
+        const div = document.createElement('div');
+        div.classList.add('medicine-item');
+        div.innerHTML = `
+            <div class="form-group">
+                <label for="medicine_name_${medicineCount}">MEDICINE NAME:</label>
+                <input type="text" id="medicine_name_${medicineCount}" name="medicine_name" list="masterMedicinesList" value="${medicine.name}" placeholder="E.G., AMOXICILLIN" oninput="this.value = this.value.toUpperCase()">
+                <datalist id="masterMedicinesList"></datalist>
+            </div>
+            <div class="form-group">
+                <label for="medicine_category_${medicineCount}">CATEGORY:</label>
+                <input type="text" id="medicine_category_${medicineCount}" name="medicine_category" value="${medicine.category}" placeholder="E.G., ANTIBIOTIC" readonly class="bg-gray-100 cursor-not-allowed">
+            </div>
+            <div class="form-group">
+                <label for="medicine_dosage_${medicineCount}">DOSAGE:</label>
+                <input type="text" id="medicine_dosage_${medicineCount}" name="medicine_dosage" value="${medicine.dosage}" placeholder="E.G., 1 TAB" readonly class="bg-gray-100 cursor-not-allowed">
+            </div>
+            <div class="form-group">
+                <label for="medicine_time_${medicineCount}">TIME:</label>
+                <input type="text" id="medicine_time_${medicineCount}" name="medicine_time" value="${medicine.time}" placeholder="E.G., TWICE A DAY" readonly class="bg-gray-100 cursor-not-allowed">
+            </div>
+            <button type="button" class="remove-medicine-btn" onclick="removeMedicineInput(this)">X</button>
+        `;
+        container.appendChild(div);
+        updateMasterMedicineDatalist(); // Update datalist for new input
+
+        // Add event listener to auto-fill other fields when medicine name changes
+        const medicineNameInput = div.querySelector(`input[name="medicine_name"]`);
+        medicineNameInput.addEventListener('change', function() {
+            const selectedName = this.value.trim().toUpperCase();
+            const matchedMedicine = masterMedicines.find(med => med.name === selectedName);
+            const parentDiv = this.closest('.medicine-item');
+            if (matchedMedicine) {
+                parentDiv.querySelector('input[name="medicine_category"]').value = matchedMedicine.category || '';
+                parentDiv.querySelector('input[name="medicine_dosage"]').value = matchedMedicine.dosage || '';
+                parentDiv.querySelector('input[name="medicine_time"]').value = matchedMedicine.time || '';
+            } else {
+                // Clear if no match, allowing manual entry for non-master medicines
+                parentDiv.querySelector('input[name="medicine_category"]').value = '';
+                parentDiv.querySelector('input[name="medicine_dosage"]').value = '';
+                parentDiv.querySelector('input[name="medicine_time"]').value = '';
+            }
+        });
+    }
+
+    // Remove a medicine input row
+    function removeMedicineInput(button) {
+        button.closest('.medicine-item').remove();
+    }
+
+    // Master List Functions
+    function renderMasterTreatmentList() {
+        const listDiv = document.getElementById('masterTreatmentList');
+        listDiv.innerHTML = '';
+        if (masterTreatments.length === 0) {
+            listDiv.innerHTML = '<p class="text-gray-500">NO MASTER TREATMENTS ADDED YET.</p>';
+            return;
+        }
+        masterTreatments.forEach((treatment, index) => {
+            const item = document.createElement('div');
+            item.classList.add('master-list-item');
+            item.innerHTML = `
+                <span>${treatment}</span>
+                <button onclick="removeMasterTreatment(${index})" class="btn bg-red-500 hover:bg-red-700 text-white">REMOVE</button>
+            `;
+            listDiv.appendChild(item);
+        });
+    }
+
+    function addTreatment() {
+        const newTreatmentNameInput = document.getElementById('newTreatmentName');
+        const newTreatmentName = newTreatmentNameInput.value.trim().toUpperCase();
+        if (newTreatmentName && !masterTreatments.includes(newTreatmentName)) {
+            masterTreatments.push(newTreatmentName);
+            localStorage.setItem('masterTreatments', JSON.stringify(masterTreatments));
+            newTreatmentNameInput.value = '';
+            renderMasterTreatmentList();
+            updateMasterTreatmentDatalist();
+            showCustomMessageModal('SUCCESS', `${newTreatmentName} ADDED TO MASTER TREATMENTS.`, 'success');
+        } else if (masterTreatments.includes(newTreatmentName)) {
+            showCustomMessageModal('INFO', `${newTreatmentName} IS ALREADY IN THE MASTER TREATMENTS LIST.`, 'info');
+        } else {
+            showCustomMessageModal('WARNING', 'TREATMENT NAME CANNOT BE EMPTY.', 'warning');
+        }
+    }
+
+    function removeMasterTreatment(index) {
+        if (confirm('ARE YOU SURE YOU WANT TO REMOVE THIS TREATMENT FROM THE MASTER LIST?')) {
+            const removedTreatment = masterTreatments.splice(index, 1);
+            localStorage.setItem('masterTreatments', JSON.stringify(masterTreatments));
+            renderMasterTreatmentList();
+            updateMasterTreatmentDatalist();
+            showCustomMessageModal('DELETED', `${removedTreatment} REMOVED FROM MASTER TREATMENTS.`, 'success');
+        }
+    }
+
+    function updateMasterTreatmentDatalist() {
+        const datalist = document.getElementById('masterTreatmentsList');
+        if (datalist) { // Ensure datalist exists before trying to manipulate it
+            datalist.innerHTML = '';
+            masterTreatments.forEach(treatment => {
+                const option = document.createElement('option');
+                option.value = treatment;
+                datalist.appendChild(option);
+            });
+        }
+    }
+
+    function renderMasterMedicineList() {
+        const listDiv = document.getElementById('masterMedicineList');
+        listDiv.innerHTML = '';
+        if (masterMedicines.length === 0) {
+            listDiv.innerHTML = '<p class="text-gray-500">NO MASTER MEDICINES ADDED YET.</p>';
+            return;
+        }
+        masterMedicines.forEach((medicine, index) => {
+            const item = document.createElement('div');
+            item.classList.add('master-list-item');
+            item.innerHTML = `
+                <span>${medicine.name} (${medicine.category || 'N/A'}) - ${medicine.dosage || 'N/A'} - ${medicine.time || 'N/A'}</span>
+                <button onclick="removeMasterMedicine(${index})" class="btn bg-red-500 hover:bg-red-700 text-white">REMOVE</button>
+            `;
+            listDiv.appendChild(item);
+        });
+    }
+
+    function addMedicine() {
+        const newMedicineNameInput = document.getElementById('newMedicineName');
+        const newMedicineCategoryInput = document.getElementById('newMedicineCategory');
+        const newMedicineDefaultDosageInput = document.getElementById('newMedicineDefaultDosage');
+        const newMedicineDefaultTimeInput = document.getElementById('newMedicineDefaultTime');
+
+        const newMedicine = {
+            name: newMedicineNameInput.value.trim().toUpperCase(),
+            category: newMedicineCategoryInput.value.trim().toUpperCase(),
+            dosage: newMedicineDefaultDosageInput.value.trim().toUpperCase(),
+            time: newMedicineDefaultTimeInput.value.trim().toUpperCase()
+        };
+
+        if (newMedicine.name) {
+            // Check for duplicates based on name only for simplicity
+            const isDuplicate = masterMedicines.some(med => med.name === newMedicine.name);
+            if (!isDuplicate) {
+                masterMedicines.push(newMedicine);
+                localStorage.setItem('masterMedicines', JSON.stringify(masterMedicines));
+                newMedicineNameInput.value = '';
+                newMedicineCategoryInput.value = '';
+                newMedicineDefaultDosageInput.value = '';
+                newMedicineDefaultTimeInput.value = '';
+                renderMasterMedicineList();
+                updateMasterMedicineDatalist();
+                showCustomMessageModal('SUCCESS', `${newMedicine.name} ADDED TO MASTER MEDICINES.`, 'success');
+            } else {
+                showCustomMessageModal('INFO', `${newMedicine.name} IS ALREADY IN THE MASTER MEDICINES LIST.`, 'info');
+            }
+        } else {
+            showCustomMessageModal('WARNING', 'MEDICINE NAME CANNOT BE EMPTY.', 'warning');
+        }
+    }
+
+    function removeMasterMedicine(index) {
+        if (confirm('ARE YOU SURE YOU WANT TO REMOVE THIS MEDICINE FROM THE MASTER LIST?')) {
+            const removedMedicine = masterMedicines.splice(index, 1);
+            localStorage.setItem('masterMedicines', JSON.stringify(masterMedicines));
+            renderMasterMedicineList();
+            updateMasterMedicineDatalist();
+            showCustomMessageModal('DELETED', `${removedMedicine[0].name} REMOVED FROM MASTER MEDICINES.`, 'success');
+        }
+    }
+
+    function updateMasterMedicineDatalist() {
+        const datalist = document.getElementById('masterMedicinesList');
+        if (datalist) { // Ensure datalist exists before trying to manipulate it
+            datalist.innerHTML = '';
+            masterMedicines.forEach(medicine => {
+                const option = document.createElement('option');
+                option.value = medicine.name; // Only name for autocomplete
+                datalist.appendChild(option);
+            });
+        }
+
+        // The auto-fill logic for category/dosage/time for individual medicine input rows is now handled directly in addMedicineInput
+        // and is also triggered on 'change' of the medicine_name input for dynamically added rows.
+        // No need for a global event listener here.
+    }
+
+
+    // Handle form submission for patient registration/appointment
+    document.getElementById('patient-appointment-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        isUserSubmitting = true; // Set flag for explicit submission
+
+        // Collect patient data
+        const registrationDateRaw = document.getElementById('registration_date_raw').value;
+        const doctor = document.getElementById('doctor').value;
+        const patientName = document.getElementById('patient_name').value;
+        const patientAge = document.getElementById('patient_age').value;
+        const patientGender = document.getElementById('patient_gender').value;
+        const patientContact = document.getElementById('patient_contact').value;
+        // Purpose of visit is REMOVED from this form, so it won't be collected here.
+        const dentalIssue = document.getElementById('dental_issue').value;
+        const treatmentDoneNotes = document.getElementById('treatment_done_notes').value;
+        const nextAppointmentDate = document.getElementById('appointment_date').value;
+        const nextAppointmentTime = document.getElementById('selected_appointment_time').value;
+
+        // Health issues
+        const healthIssues = [];
+        document.querySelectorAll('input[name="health_issues"]:checked').forEach(checkbox => {
+            healthIssues.push(checkbox.value);
+        });
+        const medicationSpecify = document.getElementById('medication_checkbox').checked ? document.getElementById('medication_specify').value : '';
+        const otherHealthSpecify = document.getElementById('other_health_checkbox').checked ? document.getElementById('other_health_specify').value : '';
+
+
+        // Treatments
+        const treatments = [];
+        document.querySelectorAll('.treatment-item').forEach(item => {
+            const name = item.querySelector('input[name="treatment_name"]').value;
+            const cost = parseFloat(item.querySelector('input[name="treatment_cost"]').value) || 0;
+            if (name) {
+                treatments.push({ name, cost });
+            }
+        });
+
+        // Medicines
+        const medicines = [];
+        document.querySelectorAll('.medicine-item').forEach(item => {
+            const name = item.querySelector('input[name="medicine_name"]').value;
+            const category = item.querySelector('input[name="medicine_category"]').value;
+            const dosage = item.querySelector('input[name="medicine_dosage"]').value;
+            const time = item.querySelector('input[name="medicine_time"]').value;
+            if (name) {
+                medicines.push({ name, category, dosage, time });
+            }
+        });
+
+        // Payment details
+        const totalTreatmentCost = parseFloat(document.getElementById('total_treatment_cost').value) || 0;
+        const totalAmountPaid = parseFloat(document.getElementById('total_amount_paid').value) || 0;
+        const amountPaidToday = parseFloat(document.getElementById('amount_paid_today').value) || 0;
+        const balanceDue = parseFloat(document.getElementById('balance_due').value.replace('₹ ', '')) || 0;
+
+        // Validation
+        if (!doctor || !patientName || !patientContact || treatments.length === 0) {
+            showCustomMessageModal('VALIDATION ERROR', 'DOCTOR, PATIENT NAME, CONTACT, AND AT LEAST ONE TREATMENT ARE REQUIRED.', 'error');
+            return;
+        }
+
+        // Check if patient contact already exists for new registration
+        if (document.getElementById('patient-status').textContent === 'NEW PATIENT' && patients[patientContact]) {
+            showCustomMessageModal('ERROR', 'PATIENT WITH THIS CONTACT NUMBER ALREADY EXISTS. PLEASE SEARCH AND LOAD THEIR DATA INSTEAD OF REGISTERING NEW.', 'error');
+            return;
+        }
+
+        const patientId = patients[patientContact] ? patients[contact].registration_id : generateRegistrationId(doctor);
+        const registrationDateDisplay = formatDate(registrationDateRaw); // Format for display here
+
+        const patientData = {
+            registration_id: patientId,
+            registration_date: registrationDateRaw, // Store raw date for sorting
+            registration_date_display: registrationDateDisplay, // Store formatted for display
+            doctor: doctor,
+            patient_name: patientName,
+            patient_age: patientAge,
+            patient_gender: patientGender,
+            patient_contact: patientContact,
+            // purpose_of_visit: purposeOfVisit, // REMOVED from this form submission
+            dental_issue: dentalIssue,
+            health_issues: healthIssues,
+            medication_specify: medicationSpecify,
+            other_health_specify: otherHealthSpecify,
+            treatments: treatments,
+            medicines: medicines,
+            treatment_done_notes: treatmentDoneNotes,
+            next_appointment_date: nextAppointmentDate,
+            next_appointment_time: nextAppointmentTime,
+            total_treatment_cost: totalTreatmentCost,
+            total_amount_paid: totalAmountPaid,
+            amount_paid_today: amountPaidToday, // Store amount paid today for financial records
+            balance_due: balanceDue,
+            last_updated: new Date().toISOString()
+        };
+
+        patients[patientContact] = patientData; // Use contact as key for easy lookup
+        localStorage.setItem('patients', JSON.stringify(patients));
+
+        // Add to appointments if a next appointment is set
+        if (nextAppointmentDate && nextAppointmentTime) {
+            // Check if this specific appointment already exists to avoid duplicates
+            const existingAppointmentIndex = appointments.findIndex(app =>
+                app.patientContact === patientContact &&
+                app.appointmentDate === nextAppointmentDate &&
+                app.appointmentTime === nextAppointmentTime
+            );
+
+            if (existingAppointmentIndex === -1) {
+                // If it's a new appointment, add it
+                appointments.push({
+                    id: crypto.randomUUID(), // Unique ID for appointment
+                    patientContact: patientContact,
+                    patientName: patientName,
+                    doctor: doctor,
+                    appointmentDate: nextAppointmentDate,
+                    appointmentTime: nextAppointmentTime,
+                    purposeOfVisit: patient.purpose_of_visit || 'N/A' // Use existing purpose_of_visit if available, otherwise 'N/A'
+                });
+            } else {
+                // For simplicity, we are not updating existing appointments here, just preventing duplicates.
+                console.log('Attempted to add duplicate appointment, ignored.');
+            }
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            renderCalendar(); // Re-render calendar to reflect changes
+        }
+
+        // Add to financial records (simplified for now, each submission is a record)
+        if (amountPaidToday > 0 || totalTreatmentCost > 0) { // Only record if there's a cost or payment
+            const financialRecord = {
+                id: crypto.randomUUID(),
+                date: new Date().toISOString().slice(0, 10), // Current date for the record
+                doctor: doctor,
+                patientName: patientName,
+                patientContact: patientContact,
+                totalCost: totalTreatmentCost,
+                amountPaid: amountPaidToday, // Only the amount paid on this specific interaction
+                balance: balanceDue,
+                recordType: patients[patientContact] ? 'UPDATE' : 'NEW_PATIENT', // Distinguish initial vs. follow-up
+                timestamp: new Date().toISOString()
+            };
+            financialRecords.push(financialRecord);
+            localStorage.setItem('financialRecords', JSON.stringify(financialRecords));
+            renderIncomeRecordsTable(); // Re-render income records
+        }
+
+
+        showCustomMessageModal('SUCCESS', 'PATIENT DATA SAVED SUCCESSFULLY!', 'success');
+        resetPatientForm(); // Reset form after successful submission
+        // navigate('registered-patients-section'); // REMOVED: No longer navigate to this section
+        showPrescriptionPreview(patientContact); // ADDED: Directly show prescription preview for the saved patient
+    });
+
+    // Reset Form button event listener
+    document.getElementById('reset-form').addEventListener('click', resetPatientForm);
+
+    // Reset patient form fields
+    function resetPatientForm() {
+        document.getElementById('patient-appointment-form').reset();
+        document.getElementById('registration_date').value = ''; // Clear ID field
+        document.getElementById('registration_date_raw').value = '';
+        document.getElementById('patient-status').textContent = '';
+        document.getElementById('treatments-container').innerHTML = ''; // Clear dynamic treatments
+        addTreatmentInput(); // Add one empty treatment row by default
+        document.getElementById('medicines-container').innerHTML = ''; // Clear dynamic medicines
+        addMedicineInput(); // Add one empty medicine row by default
+
+        // Reset payment fields explicitly to 0.00
+        document.getElementById('total_treatment_cost').value = '0.00';
+        document.getElementById('total_amount_paid').value = ''; // Set to blank
+        document.getElementById('amount_paid_today').value = ''; // Set to blank
+        document.getElementById('amount_paid_today').dataset.previousValue = '0'; // Reset previous value for calculation
+        document.getElementById('balance_due').value = '₹ 0.00';
+        document.getElementById('balance_due').classList.remove('balance-due-text');
+
+        // Clear and regenerate time slots for today
+        const today = new Date();
+        const todayDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        document.getElementById('appointment_date').value = todayDateStr; // Set current date by default
+        generateTimeSlots('appointment_time_slots', todayDateStr, 'display_selected_appointment_time', 'selected_appointment_time');
+
+        // Hide specify inputs
+        document.getElementById('medication_specify').style.display = 'none';
+        document.getElementById('other_health_specify').style.display = 'none';
+
+        // Set registration date and ID for new patient
+        const now = new Date();
+        const dateString = now.toISOString().slice(0, 10); //YYYY-MM-DD
+        document.getElementById('registration_date_raw').value = dateString;
+        document.getElementById('registration_date').value = `NEW (${formatDate(dateString)})`;
+    }
+
+
+    // Event listener for patient search by contact
+    document.getElementById('search-patient-btn').addEventListener('click', loadPatientData);
+    document.getElementById('search_patient_contact').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission if input is in a form
+            loadPatientData();
+        }
+    });
+
+    // Load patient data into the form
+    function loadPatientData() {
+        const contact = document.getElementById('search_patient_contact').value.trim();
+        const patient = patients[contact];
+        const patientStatus = document.getElementById('patient-status');
+
+        if (patient) {
+            // Found existing patient
+            patientStatus.textContent = `EXISTING PATIENT: ${patient.patient_name}`;
+            patientStatus.className = 'mt-3 text-sm text-center text-green-600';
+
+            // Ensure registration_date_display is used for display
+            document.getElementById('registration_date').value = `${patient.registration_id} (${patient.registration_date_display})`;
+            document.getElementById('registration_date_raw').value = patient.registration_date; // Keep raw for internal use
+            document.getElementById('doctor').value = patient.doctor || '';
+            document.getElementById('patient_name').value = patient.patient_name || '';
+            document.getElementById('patient_age').value = patient.patient_age || '';
+            document.getElementById('patient_gender').value = patient.patient_gender || '';
+            document.getElementById('patient_contact').value = patient.patient_contact || '';
+            // purpose_of_visit field is removed from this form, so skip setting its value
+            document.getElementById('dental_issue').value = patient.dental_issue || '';
+            document.getElementById('treatment_done_notes').value = patient.treatment_done_notes || '';
+            document.getElementById('appointment_date').value = patient.next_appointment_date || ''; // This isYYYY-MM-DD for date input
+
+            // Set health issues checkboxes and specify inputs
+            document.querySelectorAll('input[name="health_issues"]').forEach(checkbox => {
+                checkbox.checked = patient.health_issues.includes(checkbox.value);
+            });
+            document.getElementById('medication_specify').value = patient.medication_specify || '';
+            document.getElementById('other_health_specify').value = patient.other_health_specify || '';
+            document.getElementById('medication_specify').style.display = document.getElementById('medication_checkbox').checked ? 'block' : 'none';
+            document.getElementById('other_health_specify').style.display = document.getElementById('other_health_checkbox').checked ? 'block' : 'none';
+
+
+            // Clear and re-add treatments
+            const treatmentsContainer = document.getElementById('treatments-container');
+            treatmentsContainer.innerHTML = '';
+            if (patient.treatments && patient.treatments.length > 0) {
+                patient.treatments.forEach(t => addTreatmentInput(t.name, t.cost));
+            } else {
+                addTreatmentInput(); // Add a blank one if none exist
+            }
+
+            // Clear and re-add medicines
+            const medicinesContainer = document.getElementById('medicines-container');
+            medicinesContainer.innerHTML = '';
+            if (patient.medicines && patient.medicines.length > 0) {
+                patient.medicines.forEach(m => addMedicineInput(m));
+            } else {
+                addMedicineInput(); // Add a blank one if none exist
+            }
+
+
+            // Set payment details
+            document.getElementById('total_treatment_cost').value = (patient.total_treatment_cost || 0).toFixed(2);
+            document.getElementById('total_amount_paid').value = (patient.total_amount_paid > 0 ? patient.total_amount_paid.toFixed(2) : ''); // Set to blank if 0
+            document.getElementById('amount_paid_today').value = ''; // Always reset amount paid today on load
+            document.getElementById('amount_paid_today').dataset.previousValue = '0'; // Reset previous for calc
+            document.getElementById('balance_due').value = `₹ ${(patient.balance_due || 0).toFixed(2)}`;
+            if (patient.balance_due > 0) {
+                document.getElementById('balance_due').classList.add('balance-due-text');
+            } else {
+                document.getElementById('balance_due').classList.remove('balance-due-text');
+            }
+
+            // Generate time slots for next appointment date
+            if (patient.next_appointment_date) {
+                generateTimeSlots('appointment_time_slots', patient.next_appointment_date, 'display_selected_appointment_time', 'selected_appointment_time');
+                // Pre-select the saved time slot
+                document.getElementById('selected_appointment_time').value = patient.next_appointment_time || '';
+                document.getElementById('display_selected_appointment_time').value = patient.next_appointment_time ? formatTime(patient.next_appointment_time) : '';
+
+                // Visually mark the selected slot if it exists
+                const selectedSlotBtn = document.querySelector(`#appointment_time_slots button[value="${patient.next_appointment_time}"]`);
+                if (selectedSlotBtn) {
+                    selectedSlotBtn.classList.add('selected');
+                }
+            } else {
+                // If no next appointment, generate for today
+                const today = new Date();
+                const todayDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                document.getElementById('appointment_date').value = todayDateStr;
+                generateTimeSlots('appointment_time_slots', todayDateStr, 'display_selected_appointment_time', 'selected_appointment_time');
+            }
+
+        } else {
+            // New patient
+            patientStatus.textContent = 'NEW PATIENT';
+            patientStatus.className = 'mt-3 text-sm text-center text-red-600';
+            resetPatientForm(); // Clear form for new patient input
+            document.getElementById('patient_contact').value = contact; // Pre-fill contact
+        }
+        document.getElementById('search_patient_contact').value = ''; // Clear search input
+    }
+
+
+    // Event listener for dental issue dropdown to suggest treatments
+    document.getElementById('dental_issue').addEventListener('change', function() {
+        const selectedIssue = this.value;
+        const suggestedTreatment = dentalIssueTreatmentMap[selectedIssue];
+        const treatmentsContainer = document.getElementById('treatments-container');
+
+        // Clear existing treatments if a new suggestion is to be added
+        // This prevents multiple suggestions accumulating without user clearing
+        if (suggestedTreatment) {
+            treatmentsContainer.innerHTML = ''; // Clear current treatments
+            addTreatmentInput(suggestedTreatment); // Add the suggested one
+            populateMedicinesForTreatment(suggestedTreatment); // Automatically populate medicines for the suggested treatment
+        } else {
+            // If no suggestion or cleared, ensure there's at least one blank input
+            if (treatmentsContainer.children.length === 0) {
+                addTreatmentInput();
+            }
+            // If dental issue is cleared, might want to clear medicines too, or leave them.
+            // For now, leave them if user manually added.
+        }
+    });
+
+    // Event listeners for health issues checkboxes to show/hide specify inputs
+    document.getElementById('medication_checkbox').addEventListener('change', function() {
+        document.getElementById('medication_specify').style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) document.getElementById('medication_specify').value = '';
+    });
+    document.getElementById('other_health_checkbox').addEventListener('change', function() {
+        document.getElementById('other_health_specify').style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) document.getElementById('other_health_specify').value = '';
+    });
+
+
+    // Populate Registered Patients Table
+    function renderRegisteredPatientsTable(searchTerm = '') {
+        const tableBody = document.getElementById('registered-patients-table-body');
+        tableBody.innerHTML = '';
+
+        const patientsArray = Object.values(patients);
+
+        const filteredPatients = patientsArray.filter(patient => {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            return patient.patient_name.toLowerCase().includes(lowerCaseSearchTerm) ||
+                   patient.patient_contact.includes(lowerCaseSearchTerm);
+        }).sort((a, b) => {
+            // Sort by registration date (most recent first)
+            return new Date(b.registration_date) - new Date(a.registration_date);
+        });
+
+
+        if (filteredPatients.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-4 text-gray-500">NO REGISTERED PATIENTS FOUND.</td></tr>';
+            return;
+        }
+
+        filteredPatients.forEach(patient => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${patient.registration_id || 'N/A'}</td>
+                <td>${patient.registration_date_display || 'N/A'}</td>
+                <td>${patient.patient_name || 'N/A'}</td>
+                <td>${patient.patient_age || 'N/A'} / ${patient.patient_gender || 'N/A'}</td>
+                <td>${patient.patient_contact || 'N/A'}</td>
+                <td>${patient.doctor || 'N/A'}</td>
+                <td>${patient.dental_issue ? capitalizeWords(patient.dental_issue.replace(/_/g, ' ')) : 'N/A'}</td>
+                <td class="${patient.balance_due > 0 ? 'balance-due-cell' : ''}">₹ ${patient.balance_due ? patient.balance_due.toFixed(2) : '0.00'}</td>
+                <td>${patient.next_appointment_date ? formatDate(patient.next_appointment_date) : 'N/A'} ${patient.next_appointment_time ? formatTime(patient.next_appointment_time) : ''}</td>
+                <td>
+                    <button class="view-details-btn" onclick="viewPatientDetails('${patient.patient_contact}')">VIEW / EDIT</button>
+                    <button class="view-details-btn bg-red-500 hover:bg-red-700" onclick="deletePatient('${patient.patient_contact}')">DELETE</button>
+                </td>
+            `;
+        });
+    }
+
+    // Trigger search for registered patients
+    document.getElementById('registered_patient_search_btn').addEventListener('click', function() {
+        const searchTerm = document.getElementById('registered_patient_search_input').value;
+        renderRegisteredPatientsTable(searchTerm);
+    });
+    document.getElementById('registered_patient_search_input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const searchTerm = this.value;
+            renderRegisteredPatientsTable(searchTerm);
+        }
+    });
+
+    // View/Edit patient details (navigates to patient form and loads data)
+    function viewPatientDetails(contact) {
+        navigate('patient-form-section');
+        document.getElementById('search_patient_contact').value = contact;
+        loadPatientData();
+    }
+
+    // Delete patient from records
+    function deletePatient(contact) {
+        if (confirm(`ARE YOU SURE YOU WANT TO DELETE ${patients[contact].patient_name}'S RECORD PERMANENTLY?`)) {
+            // Remove patient
+            delete patients[contact];
+            localStorage.setItem('patients', JSON.stringify(patients));
+
+            // Remove associated appointments
+            appointments = appointments.filter(app => app.patientContact !== contact);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+
+            // Remove associated financial records
+            financialRecords = financialRecords.filter(rec => rec.patientContact !== contact);
+            localStorage.setItem('financialRecords', JSON.stringify(financialRecords));
+
+            showCustomMessageModal('DELETED', 'PATIENT RECORD AND ASSOCIATED DATA DELETED SUCCESSFULLY.', 'success');
+            renderRegisteredPatientsTable(); // Re-render table
+            renderCalendar(); // Re-render calendar as appointments might have been removed
+            renderPrescriptionsOverview(); // Re-render prescriptions
+            renderIncomeRecordsTable(); // Re-render income
+            renderTodaysDoctorAppointments(); // Re-render today's appointments
+            renderUpcomingAppointments(); // Re-render upcoming appointments
+        }
+    }
+
+
+    // Prescription Overview Section (Main display)
+    function renderPrescriptionsOverview() {
+        const doctorPrescriptionsList = document.getElementById('doctor-prescriptions-list');
+        doctorPrescriptionsList.innerHTML = ''; // Clear existing content
+
+        const prescriptionCountMessage = document.getElementById('prescription-count-message');
+        const allPatients = Object.values(patients); // Get all patients as an array
+
+        if (allPatients.length === 0) {
+            prescriptionCountMessage.textContent = 'NO PRESCRIPTIONS AVAILABLE.';
+            return;
+        }
+
+        // Group patients by doctor
+        const patientsByDoctor = {};
+        allPatients.forEach(patient => {
+            const doctorName = patient.doctor || 'UNASSIGNED DOCTOR';
+            if (!patientsByDoctor[doctorName]) {
+                patientsByDoctor[doctorName] = [];
+            }
+            patientsByDoctor[doctorName].push(patient);
+        });
+
+        let totalPrescriptions = 0;
+
+        for (const doctorName in patientsByDoctor) {
+            const doctorGroupDiv = document.createElement('div');
+            doctorGroupDiv.classList.add('doctor-group', 'mb-6');
+            doctorGroupDiv.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">${doctorName} (${patientsByDoctor[doctorName].length} Patients)</h3>
+                <ul class="list-none p-0"></ul>
+            `;
+            const ul = doctorGroupDiv.querySelector('ul');
+
+            // Sort patients by name for consistent display
+            patientsByDoctor[doctorName].sort((a, b) => a.patient_name.localeCompare(b.patient_name)).forEach(patient => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('flex', 'justify-between', 'items-center', 'py-3', 'border-b', 'border-gray-200');
+                if (patient.balance_due > 0) {
+                    listItem.classList.add('bg-red-50', 'border-red-200'); // Highlight patients with balance due
+                }
+                listItem.innerHTML = `
+                    <div>
+                        <strong class="text-lg">${patient.patient_name}</strong>
+                        <p class="text-sm text-gray-600">CONTACT: ${patient.patient_contact}</p>
+                        <p class="text-sm text-gray-600">LAST UPDATED: ${formatDate(patient.last_updated ? patient.last_updated.slice(0, 10) : 'N/A')}</p>
+                    </div>
+                    <div>
+                        <span class="text-md font-semibold ${patient.balance_due > 0 ? 'text-red-600' : 'text-green-600'}">BALANCE: ₹ ${patient.balance_due ? patient.balance_due.toFixed(2) : '0.00'}</span>
+                        <button class="view-details-btn ml-4" onclick="showPrescriptionPreview('${patient.patient_contact}')">VIEW PRESCRIPTION</button>
+                    </div>
+                `;
+                ul.appendChild(listItem);
+                totalPrescriptions++;
+            });
+            doctorPrescriptionsList.appendChild(doctorGroupDiv);
+        }
+        prescriptionCountMessage.textContent = `DISPLAYING ${totalPrescriptions} PRESCRIPTION${totalPrescriptions !== 1 ? 'S' : ''}.`;
+    }
+
+    // Show Prescription Preview Section
+    function showPrescriptionPreview(contact) {
+        const patient = patients[contact];
+        if (!patient) {
+            showCustomMessageModal('ERROR', 'PATIENT DATA NOT FOUND.', 'error');
+            return;
+        }
+
+        // Navigate to the prescription-view-section
+        navigate('prescription-view-section');
+
+        // Fill PDF template fields
+        document.getElementById('pdf-registration-id').textContent = patient.registration_id || 'N/A';
+        document.getElementById('pdf-registration-date').textContent = patient.registration_date_display || 'N/A';
+        document.getElementById('pdf-prescription-date').textContent = formatDate(new Date().toISOString().slice(0, 10)); // Current date formatted
+        document.getElementById('pdf-patient-name').textContent = patient.patient_name || 'N/A';
+        document.getElementById('pdf-age-gender').textContent = `${patient.patient_age || 'N/A'} / ${patient.patient_gender || 'N/A'}`;
+        document.getElementById('pdf-patient-contact').textContent = patient.patient_contact || 'N/A';
+        document.getElementById('pdf-doctor').textContent = patient.doctor || 'N/A';
+        document.getElementById('pdf-purpose-of-visit').textContent = patient.purpose_of_visit || 'N/A'; // New field, will show N/A if not booked via modal
+        document.getElementById('pdf-doctor-info-small').textContent = patient.doctor || 'N/A'; // For signature line
+        document.getElementById('pdf-appointment-time').textContent = patient.next_appointment_date ? `${formatDate(patient.next_appointment_date)} at ${formatTime(patient.next_appointment_time)}` : 'N/A';
+        document.getElementById('pdf-balance-due').textContent = `₹ ${patient.balance_due ? patient.balance_due.toFixed(2) : '0.00'}`;
+
+        // Health Issues Condensed (single line)
+        const pdfPreviousDisease = document.getElementById('pdf-previous-disease');
+        const healthIssues = [];
+        if (patient.health_issues && patient.health_issues.length > 0) {
+            patient.health_issues.forEach(issue => {
+                healthIssues.push(capitalizeWords(issue.replace(/_/g, ' ')));
+            });
+        }
+        if (patient.medication_specify) healthIssues.push(`CURRENTLY TAKING MEDICATION: ${patient.medication_specify}`);
+        if (patient.other_health_specify) healthIssues.push(`OTHER HEALTH CONCERNS: ${patient.other_health_specify}`);
+
+        pdfPreviousDisease.textContent = healthIssues.length > 0 ? healthIssues.join(', ') + '.' : 'NO SIGNIFICANT HEALTH HISTORY REPORTED.';
+
+
+        document.getElementById('pdf-treatment-planned-category').textContent = patient.dental_issue ? capitalizeWords(patient.dental_issue.replace(/_/g, ' ')) : 'N/A';
+
+        const pdfTreatments = document.getElementById('pdf-treatments');
+        pdfTreatments.innerHTML = '';
+        if (patient.treatments && patient.treatments.length > 0) {
+            patient.treatments.forEach(t => {
+                const li = document.createElement('li');
+                li.textContent = `${t.name}`; // Removed (COST: ₹ ...)
+                pdfTreatments.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'NO TREATMENTS RECORDED.';
+            pdfTreatments.appendChild(li);
+        }
+
+        const pdfMedicines = document.getElementById('pdf-medicines');
+        pdfMedicines.innerHTML = '';
+        if (patient.medicines && patient.medicines.length > 0) {
+            patient.medicines.forEach(m => {
+                const li = document.createElement('li');
+                li.textContent = `${m.name} (${m.category || 'N/A'}) - ${m.dosage || 'N/A'} - ${m.time || 'N/A'}`;
+                pdfMedicines.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'NO MEDICINES PRESCRIBED.';
+            pdfMedicines.appendChild(li);
+        }
+
+        document.getElementById('pdf-treatment-done-notes').textContent = patient.treatment_done_notes || 'NO SPECIFIC PROCEDURE NOTES.';
+
+
+        // Set event listener for edit button in prescription view
+        const editPrescriptionBtn = document.getElementById('edit-prescription');
+        editPrescriptionBtn.onclick = () => {
+            closePrescriptionSection();
+            viewPatientDetails(contact); // Reuse existing function to load patient data for editing
+        };
+    }
+
+    // Close Prescription Preview Section (renamed from closePrescriptionModal)
+    function closePrescriptionSection() {
+        navigate('patient-form-section'); // Go back to the patient form or any other default section
+    }
+
+    // Print Prescription
+    function printPrescription() {
+        const content = document.getElementById('prescription-modal-content').innerHTML;
+        const myWindow = window.open('', '', 'width=800,height=600');
+        myWindow.document.write(`
+            <html>
+            <head>
+                <title>Print Prescription</title>
+                <style>
+                    /* Include relevant styles directly for printing */
+                    body {
+                        font-family: 'Inter', sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        color: #333;
+                    }
+                    .print-page-content {
+                        padding: 5mm; /* Apply padding for print margins */
+                        box-sizing: border-box;
+                        line-height: 1.1; /* Tighter line spacing for print */
+                    }
+                    .clinic-header-pdf {
+                        text-align: center;
+                        margin-bottom: 0.8rem;
+                        border-bottom: 2px solid #eee;
+                        padding-bottom: 0.5rem;
+                    }
+                     /* Styles for print header to match homepage */
+                    .clinic-header-pdf .clinic-header {
+                        background: linear-gradient(135deg, #2d89ef 0%, #1a66b3 100%) !important; /* Match homepage gradient */
+                        color: white !important; /* Match homepage text color */
+                        padding: 15px 10px !important; /* Match homepage padding */
+                        border-radius: 12px !important; /* Match homepage border-radius */
+                        box-shadow: none !important; /* Remove shadow for print */
+                    }
+                    .clinic-header-pdf .clinic-header h1 {
+                        color: white !important; /* Ensure h1 is white */
+                        font-size: 2.2em !important; /* Adjust font size for print */
+                        margin: 0 !important;
+                    }
+                    .clinic-header-pdf .clinic-header .tagline {
+                        color: white !important; /* Ensure tagline is white */
+                        font-size: 0.9em !important;
+                        opacity: 0.9 !important;
+                    }
+                    .clinic-header-pdf .clinic-header p {
+                        color: white !important; /* Ensure other text is white */
+                        opacity: 0.8 !important;
+                        font-size: 0.75em !important;
+                    }
+
+                    .clinic-header-pdf .doctors-header-container {
+                        background: #f8f8f8 !important; /* Match homepage background */
+                        color: #333 !important; /* Match homepage default text */
+                        padding: 10px !important; /* Match homepage padding */
+                        border-bottom: 1px solid #eee !important;
+                        border-top: 1px solid #eee !important;
+                        border-radius: 0 !important; /* Remove border-radius for print */
+                        box-shadow: none !important; /* Remove shadow for print */
+                    }
+                    .clinic-header-pdf .doctors-header-container h2 {
+                        color: #2d89ef !important; /* Match homepage color */
+                        font-size: 1.4em !important;
+                        margin-bottom: 0.5rem !important;
+                    }
+                    .clinic-header-pdf .doctors-header-container h3 {
+                        color: #00897b !important; /* Match homepage color */
+                        font-size: 1em !important;
+                        font-style: italic !important;
+                    }
+                    .clinic-header-pdf .doctors-list {
+                        display: flex !important;
+                        justify-content: center !important;
+                        gap: 15px !important;
+                        flex-wrap: wrap !important;
+                    }
+                    .clinic-header-pdf .doctor-info-header {
+                        text-align: center !important;
+                        flex-basis: 200px !important;
+                        padding: 2px !important;
+                    }
+                    .clinic-header-pdf .doctor-name-header {
+                        color: #333 !important;
+                        font-weight: bold !important;
+                        font-size: 1em !important;
+                    }
+                    .clinic-header-pdf .doctor-specialty-header {
+                        color: #777 !important;
+                        font-size: 0.8em !important;
+                    }
+
+
+                    .patient-info-grid {
+                        display: grid !important;
+                        grid-template-columns: 1fr 1fr !important;
+                        gap: 0.5rem !important;
+                        margin-bottom: 0.8rem !important;
+                    }
+                    .patient-info-grid p {
+                        margin: 0 !important;
+                        line-height: 1.1 !important;
+                        font-size: 0.85em !important;
+                    }
+                    .patient-info-grid p strong {
+                        color: #1a73e8 !important;
+                        margin-right: 0.3rem !important;
+                    }
+                    .section-title {
+                        font-size: 1em !important;
+                        font-weight: 600 !important;
+                        color: #1a73e8 !important;
+                        margin-top: 0.8rem !important;
+                        margin-bottom: 0.4rem !important;
+                        border-bottom: 1px solid #e0f2fe !important;
+                        padding-bottom: 0.2rem !important;
+                    }
+                    /* Condensed health issues for print */
+                    .health-issues-condensed {
+                        margin-bottom: 0.6rem !important;
+                        padding-left: 0.4rem !important;
+                        font-size: 0.85em !important;
+                        line-height: 1.2 !important;
+                        color: #333 !important;
+                    }
+                    .prescription-list {
+                        list-style: disc !important;
+                        margin-left: 1rem !important;
+                        margin-bottom: 0.6rem !important;
+                        padding-left: 0 !important; /* Adjust for list-style disc */
+                    }
+                    .prescription-list li {
+                        margin-bottom: 0.2rem !important;
+                        color: #333 !important;
+                        line-height: 1.3 !important;
+                        font-size: 0.85em !important;
+                    }
+                    .doctor-signature {
+                        text-align: right !important;
+                        margin-top: 1rem !important;
+                        font-weight: 600 !important;
+                        color: #555 !important;
+                        font-size: 0.85em !important;
+                    }
+                    .prescription-footer {
+                        text-align: center !important;
+                        margin-top: auto !important; /* Pushes to bottom */
+                        padding-top: 0.5rem !important;
+                        border-top: 1px solid #1a73e8 !important;
+                        font-size: 0.75em !important;
+                        color: #1a73e8 !important;
+                        opacity: 1 !important;
+                    }
+                    /* Ensure colors print correctly */
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        color-adjust: exact !important;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="print-page-content">
+                    ${content}
+                </div>
+            </body>
+            </html>
+        `);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(() => {
+            myWindow.print();
+            myWindow.close(); // Close the new window after printing
+        }, 500);
+    }
+
+
+    // Download Prescription as PDF
+    document.getElementById('download-prescription').addEventListener('click', function() {
+        const element = document.getElementById('prescription-modal-content'); // This is the content to be converted
+
+        // Clone the element to prepare for PDF generation, removing interactive elements
+        const clonedElement = element.cloneNode(true);
+        // Remove buttons and other non-content elements from the cloned version
+        const elementsToRemove = clonedElement.querySelectorAll('.pdf-actions, .close-button'); // Keep .close-button for consistency
+        elementsToRemove.forEach(btn => btn.remove());
+
+        const options = {
+            margin: 5, // Reduced margin
+            filename: 'prescription.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        // Create a temporary element to apply styles for PDF generation without affecting main view
+        const tempDiv = document.createElement('div');
+        tempDiv.appendChild(clonedElement);
+        tempDiv.style.cssText = `
+            position: absolute;
+            left: -9999px; /* Hide off-screen */
+            top: -9999px;
+            width: 210mm; /* A4 width */
+            box-sizing: border-box;
+            background-color: white;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+        `;
+        // Append all relevant styles (including print-specific ones that might be useful for html2pdf)
+        const styleTag = document.createElement('style');
+        styleTag.textContent = `
+            /* Ensure all styles from the @media print block and general styles are copied here */
+            .clinic-header-pdf .clinic-header {
+                background: linear-gradient(135deg, #2d89ef 0%, #1a66b3 100%) !important;
+                color: white !important;
+                padding: 15px 10px !important;
+                border-radius: 12px !important;
+                box-shadow: none !important;
+            }
+            .clinic-header-pdf .clinic-header h1 { color: white !important; font-size: 2.2em !important; margin: 0 !important; }
+            .clinic-header-pdf .clinic-header .tagline { color: white !important; font-size: 0.9em !important; opacity: 0.9 !important; }
+            .clinic-header-pdf .clinic-header p { color: white !important; opacity: 0.8 !important; font-size: 0.75em !important; }
+
+            .clinic-header-pdf .doctors-header-container {
+                background: #f8f8f8 !important;
+                color: #333 !important;
+                padding: 10px !important;
+                border-bottom: 1px solid #eee !important;
+                border-top: 1px solid #eee !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            .clinic-header-pdf .doctors-header-container h2 { color: #2d89ef !important; font-size: 1.4em !important; margin-bottom: 0.5rem !important; }
+            .clinic-header-pdf .doctors-header-container h3 { color: #00897b !important; font-size: 1em !important; font-style: italic !important; }
+            .clinic-header-pdf .doctors-list { display: flex !important; justify-content: center !important; gap: 15px !important; flex-wrap: wrap !important; }
+            .clinic-header-pdf .doctor-info-header { text-align: center !important; flex-basis: 200px !important; padding: 2px !important; }
+            .clinic-header-pdf .doctor-name-header { color: #333 !important; font-weight: bold !important; font-size: 1em !important; }
+            .clinic-header-pdf .doctor-specialty-header { color: #777 !important; font-size: 0.8em !important; }
+
+            .clinic-header-pdf { text-align: center; margin-bottom: 0.8rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+            .patient-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem; }
+            .patient-info-grid p strong { color: #1a73e8; margin-right: 0.3rem; }
+            .section-title { font-size: 1em; font-weight: 600; color: #1a73e8; margin-top: 0.8rem; margin-bottom: 0.4rem; border-bottom: 1px solid #e0f2fe; padding-bottom: 0.2rem; }
+            .health-issues-condensed {
+                margin-bottom: 0.6rem;
+                padding-left: 0.4rem;
+                font-size: 0.85em;
+                line-height: 1.2;
+                color: #333;
+            }
+            .prescription-list { list-style: disc; margin-left: 1rem; margin-bottom: 0.6rem; }
+            .prescription-list li { margin-bottom: 0.2rem; color: #333; line-height: 1.3; font-size: 0.85em; }
+            .doctor-signature { text-align: right; margin-top: 1rem; font-weight: 600; color: #555; font-size: 0.85em; }
+            .prescription-footer { text-align: center; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid #1a73e8; font-size: 0.75em; color: #1a73e8; opacity: 1; }
+            /* Essential for consistent PDF rendering (forces background/text colors) */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            /* Add padding to the content within the tempDiv for better PDF margins */
+            #prescription-modal-content {
+                padding: 5mm !important; /* Match print margins */
+                min-height: auto !important; /* Allow content to dictate height */
+                border: none !important; /* Remove dashed border for PDF */
+                background-color: white !important; /* Ensure white background */
+                box-shadow: none !important;
+                line-height: 1.1 !important; /* Tighter line spacing for PDF */
+            }
+        `;
+        tempDiv.appendChild(styleTag);
+
+
+        document.body.appendChild(tempDiv); // Add to DOM briefly for html2pdf to process
+
+        html2pdf().from(tempDiv).set(options).save().then(() => {
+            showCustomMessageModal('DOWNLOAD SUCCESS', 'PRESCRIPTION PDF HAS BEEN DOWNLOADED.', 'success');
+        }).catch(error => {
+            console.error('PDF generation failed:', error);
+            showCustomMessageModal('DOWNLOAD FAILED', `COULD NOT GENERATE PDF. ERROR: ${error.message || 'UNKNOWN ERROR'}.`, 'error');
+        }).finally(() => {
+            tempDiv.remove(); // Clean up the temporary element
+        });
+    });
+
+    // WhatsApp Share (basic example, requires user interaction to send)
+    document.getElementById('whatsapp-share-prescription').addEventListener('click', function() {
+        const patient = patients[document.getElementById('pdf-patient-contact').textContent];
+        if (!patient) {
+            showCustomMessageModal('ERROR', 'PATIENT DATA NOT FOUND FOR WHATSAPP SHARE.', 'error');
+            return;
+        }
+
+        const patientName = patient.patient_name || 'Patient';
+        const doctorName = patient.doctor || 'Doctor';
+        const nextAppointment = patient.next_appointment_date ? `Next Appointment: ${formatDate(patient.next_appointment_date)} at ${formatTime(patient.next_appointment_time)}.` : '';
+        const balanceDue = patient.balance_due > 0 ? `Balance Due: ₹ ${patient.balance_due.toFixed(2)}.` : '';
+        const purposeOfVisitLine = patient.purpose_of_visit && patient.purpose_of_visit !== 'N/A' ? `Purpose of Visit: ${patient.purpose_of_visit}.\n` : '';
+
+
+        let message = `*INNODENT DENTAL CARE - PRESCRIPTION SUMMARY*\n\n`;
+        message += `Patient Name: ${patientName}\n`;
+        message += `Doctor: ${doctorName}\n`;
+        message += `Chief Complaint: ${patient.dental_issue ? capitalizeWords(patient.dental_issue.replace(/_/g, ' ')) : 'N/A'}\n`;
+        message += purposeOfVisitLine; // Add purpose of visit only if present
+        message += `\n`;
+
+        if (patient.treatments && patient.treatments.length > 0) {
+            message += `*Treatments:*\n`;
+            patient.treatments.forEach(t => {
+                message += `- ${t.name}\n`; // Cost removed
+            });
+            message += `\n`;
+        }
+
+        if (patient.medicines && patient.medicines.length > 0) {
+            message += `*Medicines:*\n`;
+            patient.medicines.forEach(m => {
+                message += `- ${m.name} (${m.category || 'N/A'}, ${m.dosage || 'N/A'}, ${m.time || 'N/A'})\n`;
+            });
+            message += `\n`;
+        }
+
+        message += `*Notes:*\n${patient.treatment_done_notes || 'N/A'}\n\n`;
+        message += `${nextAppointment}\n`;
+        message += `${balanceDue}\n\n`;
+        message += `_For detailed prescription, please refer to the clinic copy._\n`;
+        message += `_Innodent Dental Care_`;
+
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    });
+
+
+    // Populate Income Records Table
+    function renderIncomeRecordsTable(searchTerm = '') {
+        const tableBody = document.getElementById('income-records-table-body');
+        tableBody.innerHTML = '';
+
+        // Sort records by date (most recent first)
+        const sortedRecords = financialRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const filteredRecords = sortedRecords.filter(record => {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            return record.doctor.toLowerCase().includes(lowerCaseSearchTerm) ||
+                   record.patientName.toLowerCase().includes(lowerCaseSearchTerm) ||
+                   record.patientContact.includes(lowerCaseSearchTerm);
+        });
+
+
+        let totalCostSummary = 0;
+        let totalPaidSummary = 0;
+        let totalBalanceSummary = 0;
+
+        if (filteredRecords.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-gray-500">NO INCOME RECORDS FOUND.</td></tr>';
+            document.getElementById('total-cost-summary').textContent = '₹ 0.00';
+            document.getElementById('total-paid-summary').textContent = '₹ 0.00';
+            document.getElementById('total-balance-summary').textContent = '₹ 0.00';
+            document.getElementById('total-balance-summary').classList.remove('text-red-600');
+            return;
+        }
+
+        filteredRecords.forEach(record => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${formatDate(record.date)}</td>
+                <td>${record.doctor}</td>
+                <td>${record.patientName}</td>
+                <td>${record.patientContact}</td>
+                <td>₹ ${record.totalCost ? record.totalCost.toFixed(2) : '0.00'}</td>
+                <td>₹ ${record.amountPaid ? record.amountPaid.toFixed(2) : '0.00'}</td>
+                <td class="${record.balance > 0 ? 'balance-due-cell' : ''}">₹ ${record.balance ? record.balance.toFixed(2) : '0.00'}</td>
+            `;
+            totalCostSummary += record.totalCost || 0;
+            totalPaidSummary += record.amountPaid || 0;
+            totalBalanceSummary += record.balance || 0;
+        });
+
+        document.getElementById('total-cost-summary').textContent = `₹ ${totalCostSummary.toFixed(2)}`;
+        document.getElementById('total-paid-summary').textContent = `₹ ${totalPaidSummary.toFixed(2)}`;
+        document.getElementById('total-balance-summary').textContent = `₹ ${totalBalanceSummary.toFixed(2)}`;
+        if (totalBalanceSummary > 0) {
+            document.getElementById('total-balance-summary').classList.add('text-red-600');
+        } else {
+            document.getElementById('total-balance-summary').classList.remove('text-red-600');
+        }
+    }
+
+    // Trigger search for income records
+    document.getElementById('income_search_btn').addEventListener('click', function() {
+        const searchTerm = document.getElementById('income_search_input').value;
+        renderIncomeRecordsTable(searchTerm);
+    });
+    document.getElementById('income_search_input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const searchTerm = this.value;
+            renderIncomeRecordsTable(searchTerm);
+        }
+    });
+
+    // Initializations on page load
+    window.onload = function() {
+        // Set up the initial "NEW" registration date and ID for the patient form
+        if (!isUserSubmitting) { // Only reset if not coming from a user submission that failed validation
+            resetPatientForm();
+        }
+
+        // Initialize calendar and render appointments
+        initializeCalendar();
+        renderUpcomingAppointments();
+        renderTodaysDoctorAppointments();
+
+        // Render master lists on load
+        renderMasterTreatmentList();
+        renderMasterMedicineList();
+        updateMasterTreatmentDatalist();
+        updateMasterMedicineDatalist();
+
+        // Render registered patients table and income records table
+        renderRegisteredPatientsTable();
+        renderIncomeRecordsTable();
+
+        // Set initial screen
+        navigate('appointments-section'); // Start on appointments
+
+        // Attach event listener for the appointment_date in the patient form
+        document.getElementById('appointment_date').addEventListener('change', function() {
+            generateTimeSlots('appointment_time_slots', this.value, 'display_selected_appointment_time', 'selected_appointment_time');
+        });
+    };
+
+    // Event listener for the "Edit Lists" link on the patient form
+    document.getElementById('edit-lists').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        navigate('master-lists-section'); // Navigate to the master lists section
+    });
+
+
+    </script>
+</body>
+</html>
