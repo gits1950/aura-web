@@ -1,0 +1,15 @@
+"main": "main.js",
+"scripts": {
+  "start": "electron .",
+  "build": "electron-builder"
+},
+"build": {
+  "appId": "com.auradental.clinic",
+  "productName": "Aura Dental Care",
+  "directories": {
+    "buildResources": "assets"
+  },
+  "win": {
+    "target": "nsis"
+  }
+}
