@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Best Dental Clinic in Raipur | Aura Dental Care</title>
@@ -19,6 +19,83 @@ Aura Dental Care is a leading dental clinic in Raipur offering advanced treatmen
   <li>Comfortable environment</li>
 </ul>
 
+<section class="section" id="gallery-root">
+  <div class="section-max">
+    <div class="gallery-meta" style="text-align:center; margin-bottom:20px; font-weight:700; color:#00b4a0;">
+      28 cases · Radiographic & Clinical Documentation
+    </div>
+    <div id="gallery-container" class="gallery-grid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" onclick="closeLB()">
+  <button class="lb-close" onclick="event.stopPropagation();closeLB()">✕</button>
+  <div class="lb-inner" style="display:flex; flex-direction:column; align-items:center;">
+    <img id="lb-img" src="" alt="" style="max-width:90vw; max-height:80vh; border-radius:12px;">
+    <p id="lb-cap" style="color:white; margin-top:15px; font-family:'DM Sans', sans-serif;"></p>
+  </div>
+</div>
+
+<script>
+const items = [
+  { title: 'Complex Anatomy X-ray', src: 'case-images/case01.jpg', cat: 'Endo', num: 1 },
+  { title: 'Internal Anatomy View', src: 'case-images/case02.jpg', cat: 'Endo', num: 2 },
+  { title: 'Surgical Precision', src: 'case-images/case03.jpg', cat: 'Endo', num: 3 },
+  { title: 'Clinical Access', src: 'case-images/case04.jpg', cat: 'Endo', num: 4 },
+  { title: 'Canal Mapping', src: 'case-images/case05.jpg', cat: 'Endo', num: 5 },
+  { title: 'Restoration Check', src: 'case-images/case06.jpg', cat: 'Endo', num: 6 },
+  { title: 'Microscopic File Retrieval', src: 'case-images/case07.jpg', cat: 'Endo', num: 7 },
+  { title: 'Microscopic Canal Mapping', src: 'case-images/case08.jpg', cat: 'Endo', num: 8 },
+  { title: 'Separated File Visualization', src: 'case-images/case09.jpg', cat: 'Endo', num: 9 },
+  { title: 'Palatal Curvature Radiograph', src: 'case-images/case10.jpg', cat: 'Endo', num: 10 },
+  { title: 'Internal Chamber View', src: 'case-images/case11.jpg', cat: 'Endo', num: 11 },
+  { title: 'Precision Debridement View', src: 'case-images/case12.jpg', cat: 'Endo', num: 12 },
+  { title: 'Microscopic Apex View', src: 'case-images/case13.jpg', cat: 'Endo', num: 13 },
+  { title: 'Micro-Surgical Documentation', src: 'case-images/case14.jpg', cat: 'Endo', num: 14 },
+  { title: 'Complex Anatomy Navigation', src: 'case-images/case15.jpg', cat: 'Endo', num: 15 },
+  { title: 'Clinical Access View', src: 'case-images/case16.jpg', cat: 'Endo', num: 16 },
+  { title: 'Detailed Internal View', src: 'case-images/case17.jpg', cat: 'Endo', num: 17 },
+  { title: 'Structural Preservation View', src: 'case-images/case18.jpg', cat: 'Endo', num: 18 },
+  { title: 'Multi-rooted Molar X-ray Progression', src: 'case-images/case19.jpg', cat: 'Endo', num: 19 },
+  { title: 'Canal Filling Precision X-ray', src: 'case-images/case20.jpg', cat: 'Endo', num: 20 },
+  { title: 'Healing and Bone Regeneration X-ray', src: 'case-images/case21.jpg', cat: 'Endo', num: 21 },
+  { title: 'Precision Obturation', src: 'case-images/23.jpeg', cat: 'Endo', num: 23 },
+  { title: 'Surgical Endodontic Outcome X-ray', src: 'case-images/case24.jpg', cat: 'Endo', num: 24 },
+  { title: 'Long-term Success Documentation X-ray', src: 'case-images/case25.jpg', cat: 'Endo', num: 25 },
+  { title: 'Molar RCT Stages', src: 'case-images/26.jpeg', cat: 'Endo', num: 26 },
+  { title: 'Internal Success Restoration', src: 'case-images/case28.jpeg', cat: 'Endo', num: 28 },
+  { title: 'Comprehensive Smile Makeover', src: 'gallery-images/0c835a8e-97e5-49c1-92f6-9cb95b7b0418.jpg', cat: 'Smile', num: 1 },
+  { title: 'Cosmetic Veneer Alignment', src: 'gallery-images/2smile.jpeg', cat: 'Smile', num: 2 },
+  { title: 'Full Mouth Restoration', src: 'gallery-images/3smile.jpeg', cat: 'Smile', num: 3 },
+  { title: 'Aesthetic Crown Design', src: 'gallery-images/4smile.jpeg', cat: 'Smile', num: 4 },
+  { title: 'Symmetry & Brightening', src: 'gallery-images/5smile.jpeg', cat: 'Smile', num: 5 },
+  { title: 'Diastema Closure', src: 'gallery-images/6_smile.jpeg', cat: 'Smile', num: 6 }
+];
+
+const container = document.getElementById('gallery-container');
+items.forEach((item, idx) => {
+  const card = document.createElement('div');
+  card.className = 'g-card';
+  card.style.cursor = 'pointer';
+  card.onclick = () => openLB(idx);
+  card.innerHTML = '<img src="' + item.src + '" loading="lazy" style="width:100%; border-radius:8px;"><div class="g-label" style="padding:10px; font-size:12px; font-weight:700;">' + item.cat + ' Case ' + String(item.num).padStart(2, '0') + '</div>';
+  container.appendChild(card);
+});
+
+function openLB(idx) {
+  document.getElementById('lb-img').src = items[idx].src;
+  document.getElementById('lb-cap').textContent = items[idx].cat + ' Case ' + String(items[idx].num).padStart(2, '0') + ' — ' + items[idx].title;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLB() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = 'auto';
+}
+</script>
 </body>
 </html>
+
+
 
